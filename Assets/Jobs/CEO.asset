@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: addd536f129d4064f97a3d32d1f518b1, type: 3}
+  m_Name: CEO
+  m_EditorClassIdentifier: Assembly-CSharp::Organisation/Job
+  jobName: CEO
+  jobDescription: The Big Boss
+  currentEmployee: {fileID: 0}
+  requiredSkills:
+    strength: 0
+    speed: 0
+    charisma: 0.4
+    coordination: 0
+    intelligence: 0.2
+    willpower: 0
+    luck: 0
+  requiredAge: 20
+  bosses: []
+  employees:
+  - {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+  - {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+  payRate: 1000
+  performance: 0
+  nextPromotion: {fileID: 0}
