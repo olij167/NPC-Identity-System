@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db43bf7976065c642baf59ef1ad0d811, type: 3}
+  m_Name: Test Org
+  m_EditorClassIdentifier: 
+  orgName: Test Org
+  orgDescription: 
+  lifeCycleStage: 0
+  goodsProvided: []
+  servicesProvided: []
+  roster:
+    dailyShifts:
+    - rosterDay: 1
+      shiftSlots:
+      - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+        shiftDuration: {x: 9, y: 5}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 9, y: 1}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 1, y: 5}
+        numOfEmployees: 3
+    - rosterDay: 2
+      shiftSlots:
+      - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+        shiftDuration: {x: 9, y: 5}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 9, y: 1}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 1, y: 5}
+        numOfEmployees: 3
+      - job: {fileID: 11400000, guid: 82ca2473c0505404c8a8b4799734186e, type: 2}
+        shiftDuration: {x: 11, y: 1}
+        numOfEmployees: 1
+    - rosterDay: 3
+      shiftSlots:
+      - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+        shiftDuration: {x: 9, y: 5}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 9, y: 1}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 1, y: 5}
+        numOfEmployees: 3
+      - job: {fileID: 11400000, guid: 82ca2473c0505404c8a8b4799734186e, type: 2}
+        shiftDuration: {x: 11, y: 1}
+        numOfEmployees: 1
+    - rosterDay: 4
+      shiftSlots:
+      - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+        shiftDuration: {x: 9, y: 5}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 9, y: 1}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 1, y: 5}
+        numOfEmployees: 3
+      - job: {fileID: 11400000, guid: 82ca2473c0505404c8a8b4799734186e, type: 2}
+        shiftDuration: {x: 11, y: 1}
+        numOfEmployees: 1
+    - rosterDay: 5
+      shiftSlots:
+      - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+        shiftDuration: {x: 9, y: 5}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 9, y: 1}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 1, y: 5}
+        numOfEmployees: 3
+    - rosterDay: 6
+      shiftSlots: []
+    - rosterDay: 7
+      shiftSlots:
+      - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+        shiftDuration: {x: 9, y: 5}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 9, y: 1}
+        numOfEmployees: 2
+      - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+        shiftDuration: {x: 1, y: 5}
+        numOfEmployees: 3

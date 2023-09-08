@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+//Assign each NPC a house (or as homeless)
 public class NPCCreator : MonoBehaviour
 {
     //public static NPCCreator instance;
@@ -18,7 +19,7 @@ public class NPCCreator : MonoBehaviour
     //        Destroy(gameObject);
     //    }
     //}
-
+    public TimeController timeController;
     public GameObject npcPrefab;
     public NameList maleNames, femaleNames, nonBinaryNames, lastNames;
 
@@ -51,6 +52,13 @@ public class NPCCreator : MonoBehaviour
         
         newInfo.lifeStage = lifeStage;
         newInfo.age = SetRandomAge(lifeStage);
+
+        if (newInfo.age <= 18f)
+        {
+            Vector3 minSize = new Vector3(0.2f, 0.2f, 0.2f);
+            newNPC.transform.localScale = Vector3.Lerp(minSize, Vector3.one, newInfo.age / 18f);
+        }
+
         newInfo.personality = SetPersonality(newBrain);
         newBrain.npcEmotions.personality = newInfo.personality;
 
@@ -59,6 +67,8 @@ public class NPCCreator : MonoBehaviour
         //newInfo.genderPreference = sexuality;
         //newInfo.sexualPreference = SetSexualPreference(sexuality);
         newInfo.sexualPreference = sexuality;
+
+        newInfo.community = GetComponent<Community>();
         newInfo.family = family;
         SetFullName(newInfo);
 
@@ -75,12 +85,17 @@ public class NPCCreator : MonoBehaviour
 
         SetRelationships();
 
+        if (newBrain.npcRelationships.parent2 != null)
+            newBrain.npcInfo.familyOtherSide = newBrain.npcRelationships.parent2.npcInfo.family;
+
         Material sharedSkinMaterial = newNPC.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial;
         Material skinMaterial = newNPC.transform.GetChild(0).GetComponent<MeshRenderer>().material = new Material(sharedSkinMaterial);
 
         newInfo.npcSkills.SetNPCSkills(newBrain);
 
         skinMaterial.color = SetSkinColour(newBrain);
+
+        newBrain.npcSchedule.SetCalendar(newBrain.npcSchedule.calendar);
 
         return newNPC;
     }
@@ -112,7 +127,13 @@ public class NPCCreator : MonoBehaviour
             //Debug.Log(brain.name + " skin colour set based on family & chance. Colour mix = " + r);
             //brain.npcInfo.skinColour1 = brain.npcInfo.family.skinColour;
             //brain.npcInfo.skinColour2 = SetRandomColour(0f, 1f, 0.25f, 0.75f, 0.25f, 0.75f);
-            return brain.npcInfo.skinColour = Color.Lerp(brain.npcInfo.family.skinColour, SetRandomColour(0f, 1f, 0.25f, 0.75f, 0.25f, 0.75f), r);
+
+            if (brain.npcInfo.familyOtherSide != null)
+            {
+                return brain.npcInfo.skinColour = Color.Lerp(brain.npcInfo.family.skinColour, brain.npcInfo.familyOtherSide.skinColour, r);
+            }
+            else
+                return brain.npcInfo.skinColour = Color.Lerp(brain.npcInfo.family.skinColour, SetRandomColour(0f, 1f, 0.25f, 0.75f, 0.25f, 0.75f), r);
         }
     }
 
@@ -268,7 +289,13 @@ public class NPCCreator : MonoBehaviour
                 }
 
         }
-        npc.lastName = npc.family.lastName;
+
+        if (Chance.OddsOn(4))
+            npc.lastName = npc.family.lastName + "-" + npc.familyOtherSide.lastName;
+        else if (Chance.OddsOn(2))
+            npc.lastName = npc.familyOtherSide.lastName;
+        else
+            npc.lastName = npc.family.lastName;
 
         return npc.fullName = npc.firstName + " " + npc.lastName;
     }
@@ -295,17 +322,27 @@ public class NPCCreator : MonoBehaviour
         return personality;
     }
 
-    public void CreateNewFamilies(int numOfFamilies = 10)
+    public void CreateNewRandomFamilies(int numOfFamilies = 10)
     {
         possibleFamilies = new List<NPCInfo.Family>();
 
         for (int i = 0; i < numOfFamilies; i++)
         {
-           possibleFamilies.Add(CreateFamily()); 
+           possibleFamilies.Add(CreateRandomFamily()); 
         }
     }
 
-    public NPCInfo.Family CreateFamily()
+    public void CreateCommunityFamilies(Community community, int numOfFamilies = 10)
+    {
+        possibleFamilies = new List<NPCInfo.Family>();
+
+        for (int i = 0; i < numOfFamilies; i++)
+        {
+            possibleFamilies.Add(CreateFamily(community));
+        }
+    }
+
+    public NPCInfo.Family CreateFamily(Community community)
     {
         NPCInfo.Family family = new NPCInfo.Family();
 
@@ -322,7 +359,35 @@ public class NPCCreator : MonoBehaviour
 
         family.lastName = lastName;
 
-        family.familyValues.independence = Random.Range(-1f, 1f);
+        family.familyValues.privacy = Random.Range(community.communityValues.privacy - 0.25f, community.communityValues.privacy + 0.25f);
+        family.familyValues.diversity = Random.Range(community.communityValues.diversity - 0.25f, community.communityValues.diversity + 0.25f);
+        family.familyValues.freedom = Random.Range(community.communityValues.freedom - 0.25f, community.communityValues.freedom + 0.25f);
+
+        family.skillGenetics.SetFamilySkills();
+
+        family.skinColour = SetRandomColour(0f, 1f, 0.25f, 0.75f, 0.25f, 0.75f);
+
+        return family;
+    }
+
+    public NPCInfo.Family CreateRandomFamily()
+    {
+        NPCInfo.Family family = new NPCInfo.Family();
+
+        string lastName = lastNames.nameList[Random.Range(0, lastNames.nameList.Count)];
+
+        for (int i = 0; i < possibleFamilies.Count; i++)
+        {
+            if (possibleFamilies[i].lastName == lastName)
+            {
+                lastName = lastNames.nameList[Random.Range(0, lastNames.nameList.Count)];
+                i = 0;
+            }
+        }
+
+        family.lastName = lastName;
+
+        family.familyValues.privacy = Random.Range(-1f, 1f);
         family.familyValues.diversity = Random.Range(-1f, 1f);
         family.familyValues.freedom = Random.Range(-1f, 1f);
 
@@ -501,7 +566,7 @@ public class NPCCreator : MonoBehaviour
 
         if (Chance.CoinFlip())
         {
-            beliefValues.independence = -beliefValues.independence;
+            beliefValues.privacy = -beliefValues.privacy;
             beliefValues.diversity = -beliefValues.diversity;
             beliefValues.freedom = -beliefValues.freedom;
         }
@@ -641,7 +706,7 @@ public class NPCGeneratorEditor : Editor
 
                
             }
-            else creator.CreateNewFamilies();
+            else creator.CreateNewRandomFamilies();
         }
 
         GUILayout.EndHorizontal();
@@ -673,10 +738,10 @@ public class NPCGeneratorEditor : Editor
         {
             if (familyNum > 0)
             {
-                creator.CreateNewFamilies(familyNum);
+                creator.CreateNewRandomFamilies(familyNum);
                 creator.familyNum = familyNum;
             }
-            else creator.CreateNewFamilies();
+            else creator.CreateNewRandomFamilies();
         }
 
 

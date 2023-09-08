@@ -55,9 +55,9 @@ public class WeatherController : MonoBehaviour
     {
         for (int i = 0; i < seasonConditions.Count; i++)
         {
-            Debug.Log("It is now " + timeController.currentSeason);
+            Debug.Log("It is now " + timeController.currentMonth.season);
 
-            if (timeController.currentSeason == seasonConditions[i].season)
+            if (timeController.currentMonth.season == seasonConditions[i].season)
             {
                 currentSeasonConditions = seasonConditions[i];
                 return;
@@ -205,11 +205,11 @@ public class WeatherController : MonoBehaviour
             hourlyConditions.Add(hourly);
         }
 
-        temperature = hourlyConditions[timeController.timeHours].temp;
+        temperature = hourlyConditions[timeController.currentTime.timeHours].temp;
 
-        chanceOfRain = hourlyConditions[timeController.timeHours].chanceOfRain;
+        chanceOfRain = hourlyConditions[timeController.currentTime.timeHours].chanceOfRain;
 
-        weatherCondition = hourlyConditions[timeController.timeHours].weatherCondition;
+        weatherCondition = hourlyConditions[timeController.currentTime.timeHours].weatherCondition;
 
         //Debug.Log("New Weather Conditions Set \n Temperature = " + temperature); // + ", Humidity = " + humidity);
     }
@@ -219,16 +219,16 @@ public class WeatherController : MonoBehaviour
     {
         if (hourlyConditions != null)
         {
-            if (timeController.timeHours < 23)
+            if (timeController.currentTime.timeHours < 23)
             {
-                temperature = Mathf.Lerp(hourlyConditions[timeController.timeHours].temp, hourlyConditions[timeController.timeHours + 1].temp, 1f / timeController.timeOfDay);
+                temperature = Mathf.Lerp(hourlyConditions[timeController.currentTime.timeHours].temp, hourlyConditions[timeController.currentTime.timeHours + 1].temp, 1f / timeController.timeOfDay);
                 tempText.text = temperature.ToString("00") + "°C";
 
-                chanceOfRain = Mathf.Lerp(hourlyConditions[timeController.timeHours].chanceOfRain, hourlyConditions[timeController.timeHours + 1].chanceOfRain, 1f / timeController.timeOfDay);
+                chanceOfRain = Mathf.Lerp(hourlyConditions[timeController.currentTime.timeHours].chanceOfRain, hourlyConditions[timeController.currentTime.timeHours + 1].chanceOfRain, 1f / timeController.timeOfDay);
                 chanceOfRainText.text = chanceOfRain.ToString("00") + "% Chance of Rain";
             }
 
-            weatherConditionText.text = "Weather: " +hourlyConditions[timeController.timeHours].weatherCondition.ToString();
+            weatherConditionText.text = "Weather: " +hourlyConditions[timeController.currentTime.timeHours].weatherCondition.ToString();
         }
     }
 

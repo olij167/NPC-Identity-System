@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: addd536f129d4064f97a3d32d1f518b1, type: 3}
+  m_Name: Foreman
+  m_EditorClassIdentifier: 
+  jobName: Foreman
+  jobDescription: Oversees construction
+  requiredSkills:
+    strength: 0.3
+    speed: 0
+    charisma: 0.3
+    coordination: 0.2
+    intelligence: 0.5
+    willpower: 0.5
+    luck: 0
+  requiredAge: 0
+  bosses: []
+  employees:
+  - {fileID: 11400000, guid: 38752ae73cac5fc43a41b31fd1d7b446, type: 2}
+  - {fileID: 11400000, guid: 357d3f84c5609ef4f8878cb137260e01, type: 2}
+  - {fileID: 11400000, guid: ca61d32f180fc6841985d8796adf7bd0, type: 2}
+  - {fileID: 11400000, guid: f9b0c05bfbe92da43ae5e3958d07dc46, type: 2}
+  payRate: 60
+  performance: 0
+  jobSatisfaction: 0
+  weeklySchedule:
+    weekDays:
+    - day:
+        day: 7
+        date: 1
+      scheduledActivities: []
+    - day:
+        day: 1
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 2
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 3
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 4
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 5
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 6
+        date: 1
+      scheduledActivities: []
+  nextPromotion: {fileID: 0}

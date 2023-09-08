@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: addd536f129d4064f97a3d32d1f518b1, type: 3}
+  m_Name: Carpenter
+  m_EditorClassIdentifier: 
+  jobName: Carpenter
+  jobDescription: A builder who works with wood
+  requiredSkills:
+    strength: 0.4
+    speed: 0
+    charisma: 0
+    coordination: 0.5
+    intelligence: 0.3
+    willpower: 0
+    luck: 0
+  requiredAge: 18
+  bosses:
+  - {fileID: 11400000, guid: 97b08d9e1481f314e9a7e8cb95949d58, type: 2}
+  employees:
+  - {fileID: 11400000, guid: 38752ae73cac5fc43a41b31fd1d7b446, type: 2}
+  payRate: 30
+  performance: 0
+  jobSatisfaction: 0
+  weeklySchedule:
+    weekDays:
+    - day:
+        day: 7
+        date: 1
+      scheduledActivities: []
+    - day:
+        day: 1
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 2
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 3
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 4
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 5
+        date: 1
+      scheduledActivities:
+      - hourOfDay: 5
+        activityType: 3
+      - hourOfDay: 6
+        activityType: 3
+      - hourOfDay: 7
+        activityType: 3
+      - hourOfDay: 8
+        activityType: 3
+      - hourOfDay: 9
+        activityType: 3
+      - hourOfDay: 10
+        activityType: 3
+      - hourOfDay: 11
+        activityType: 3
+      - hourOfDay: 12
+        activityType: 3
+      - hourOfDay: 1
+        activityType: 3
+      - hourOfDay: 2
+        activityType: 3
+      - hourOfDay: 3
+        activityType: 3
+    - day:
+        day: 6
+        date: 1
+      scheduledActivities: []
+  nextPromotion: {fileID: 0}

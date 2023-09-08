@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEditor;
+using UnityEditor;
 using Pathfinding;
 
 public class NPCBrain : MonoBehaviour
@@ -14,7 +14,7 @@ public class NPCBrain : MonoBehaviour
 
     public NPCRelationships npcRelationships;
 
-   // public NPCSchedule npcSchedule;
+    public NPCSchedule npcSchedule;
 
     private AIDestinationSetter destinationSetter;
 
@@ -124,22 +124,22 @@ public class NPCBrain : MonoBehaviour
     //}
 }
 
-//[CustomEditor(typeof(NPCBrain))]
-//public class NPCEmotionEditor : Editor
-//{
-//    NPCInfo info;
-//    NPCEmotions emotions;
-//    NPCRelationships relationships;
-//    public override void OnInspectorGUI()
-//    {
-//        base.OnInspectorGUI();
+[CustomEditor(typeof(NPCBrain))]
+public class NPCEmotionEditor : Editor
+{
+    NPCInfo info;
+    NPCEmotions emotions;
+    NPCRelationships relationships;
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
 
-//        NPCBrain brain = (NPCBrain)target;
-//        if (brain == null) return;
+        NPCBrain brain = (NPCBrain)target;
+        if (brain == null) return;
 
-//        info = brain.npcInfo;
-//        emotions = brain.npcEmotions;
-//        relationships = brain.npcRelationships;
+        info = brain.npcInfo;
+        emotions = brain.npcEmotions;
+        relationships = brain.npcRelationships;
 
-//    }
-//}
+    }
+}

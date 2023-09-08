@@ -10,11 +10,15 @@ public class NPCInfo
     public string firstName;
     public string lastName;
 
+    public Community community;
+    public Community.Household household = null;
+
     public Family family;
+    public Family familyOtherSide;
     public Color skinColour;
     //public Color skinColour1;
     //public Color skinColour2;
-    public enum Gender { Male, Female, NonBinary}
+    public enum Gender { Male, Female, NonBinary }
     public Gender gender;
 
     [Range(-1,1)]public float appearance; //-1 = feminine, 0 = androgynous, 1 = masculine
@@ -27,7 +31,7 @@ public class NPCInfo
     //public float genderPreference; // -1 = female attraction, 0 = bi, 1 = male attraction
 
     public int age;
-    public enum LifeStage { Baby, Toddler, Child, Teen, YoungAdult, Adult, Elderly, VeryElderly, Deceased, Error};
+    public enum LifeStage { Baby, Toddler, Child, Teen, YoungAdult, Adult, Elderly, VeryElderly, Deceased, Error };
     public LifeStage lifeStage;
 
     public List<NPCTrait> npcTraits;
@@ -47,12 +51,17 @@ public class NPCInfo
 
     public Job job;
 
-[System.Serializable]
+    [System.Serializable]
     public class BeliefValues
     {
-        [Range(-1f, 1f)] public float independence; // -1 = communism, 1 = capitalism
-        [Range(-1f, 1f)] public float diversity; // -1 = conservatism, 1 = liberalism
-        [Range(-1f, 1f)] public float freedom; // -1 = totalitarianism, 1 = progressivism
+        [Tooltip("Do they value community or individuality? \n [-1 = communism, 1 = capitalism]")]
+        [Range(-1f, 1f)] public float privacy;
+
+        [Tooltip("How do they feel about outsiders? \n [-1 = conservatism, 1 = liberalism]")]
+        [Range(-1f, 1f)] public float diversity;
+
+        [Tooltip("How do they feel about government control? \n [-1 = authoritarian, 1 = liberitarian]")]
+        [Range(-1f, 1f)] public float freedom;
 
     }
 
@@ -104,7 +113,7 @@ public class NPCInfo
 //[CustomEditor(typeof(NPCBrain))]
 //public class NPCInfoEditor : Editor
 //{
-//    NPCGenerator generator;
+//    NPCCreator creator;
 //    public override void OnInspectorGUI()
 //    {
 //        base.OnInspectorGUI();
@@ -112,14 +121,11 @@ public class NPCInfo
 //        NPCBrain npc = (NPCBrain)target;
 //        if (npc.npcInfo == null) return;
 
-//        if (generator == null)
+//        if (creator == null)
 //        {
-//            generator = FindObjectOfType<NPCGenerator>();
+//            creator = FindObjectOfType<NPCCreator>();
 //        }
-//        else
-//        {
-//            generator.SetLifeStage(npc.npcInfo);
-//        }
+        
 //    }
 //}
 //#endif

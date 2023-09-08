@@ -250,7 +250,7 @@ public class NPCRelationships
     {
         //check whether their beliefs are compatible or conflicting
 
-        float indiCompatibility = thisNPC.npcInfo.beliefs.independence + otherNPC.npcInfo.beliefs.independence;
+        float indiCompatibility = thisNPC.npcInfo.beliefs.privacy + otherNPC.npcInfo.beliefs.privacy;
         float divCompatibility = thisNPC.npcInfo.beliefs.diversity + otherNPC.npcInfo.beliefs.diversity;
         float freeCompatibility = thisNPC.npcInfo.beliefs.freedom + otherNPC.npcInfo.beliefs.freedom;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu (menuName =("NameList"))]
+[CreateAssetMenu (menuName =("NameList/Single"))]
 public class NameList : ScriptableObject
 {
     public List<string> nameList;
@@ -23,6 +23,7 @@ public class NameList : ScriptableObject
         }
     }
 }
+
 
 [CustomEditor(typeof(NameList))]
 public class NameListEditor : Editor

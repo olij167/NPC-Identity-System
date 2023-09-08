@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db43bf7976065c642baf59ef1ad0d811, type: 3}
+  m_Name: Construction Co
+  m_EditorClassIdentifier: 
+  orgName: Construction Co
+  orgDescription: A construction company
+  industry: 10
+  lifeCycleStage: 2
+  potentialJobs:
+  - numOfPositions: 2
+    job: {fileID: 11400000, guid: 97b08d9e1481f314e9a7e8cb95949d58, type: 2}
+  - numOfPositions: 4
+    job: {fileID: 11400000, guid: 357d3f84c5609ef4f8878cb137260e01, type: 2}
+  - numOfPositions: 2
+    job: {fileID: 11400000, guid: 38752ae73cac5fc43a41b31fd1d7b446, type: 2}
+  - numOfPositions: 4
+    job: {fileID: 11400000, guid: f9b0c05bfbe92da43ae5e3958d07dc46, type: 2}
+  - numOfPositions: 2
+    job: {fileID: 11400000, guid: fcb6d841d27ac304690d10f8c2a9b615, type: 2}
+  - numOfPositions: 4
+    job: {fileID: 11400000, guid: ff3e4b308614d2f47b1ece56714874cf, type: 2}
+  - numOfPositions: 2
+    job: {fileID: 11400000, guid: 29b13bcc86338774a860399f22db7f2d, type: 2}
+  - numOfPositions: 12
+    job: {fileID: 11400000, guid: ca61d32f180fc6841985d8796adf7bd0, type: 2}
+  inventory:
+  - resource: {fileID: 0}
+    quantity: 0
+  facilities:
+  - {fileID: 0}
+  goodsProvided: []
+  servicesProvided: []
