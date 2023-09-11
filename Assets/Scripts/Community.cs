@@ -106,7 +106,7 @@ public class Community : MonoBehaviour
 
         creator.familyNum = Mathf.RoundToInt(population / 4);
 
-        Debug.Log("Family num = " + creator.familyNum);
+        //Debug.Log("Family num = " + creator.familyNum);
 
         creator.CreateCommunityFamilies(this, creator.familyNum);
 
@@ -128,7 +128,7 @@ public class Community : MonoBehaviour
             {
                 brain.npcInfo.household.householdName = "Homeless";
 
-                Debug.Log(brain.npcInfo.fullName + " is homeless");
+                //Debug.Log(brain.npcInfo.fullName + " is homeless");
             }
         }
 

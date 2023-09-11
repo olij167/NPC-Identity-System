@@ -76,7 +76,8 @@ public class NPCSchedule
     [System.Serializable]
     public class ScheduledActivity
     {
-        public int hourOfDay;
+        [Tooltip ("x = start time, y = end time")]
+        public Vector2 duration;
         public ActivityType activityType;
 
         // info about the scheduled activity for the npc
@@ -260,6 +261,30 @@ public class NPCSchedule
                 month.season = TimeController.Season.Summer;
                 month.endOfMonth = 31;
                 break;
+        }
+    }
+
+    public void ScheduleActivity(TimeController.Date date, ScheduledActivity activity)
+    {
+        // find date in calendar
+        
+        for (int m = 0; m < calendar.calendarMonths.Count; m++)
+        {
+            if (calendar.calendarMonths[m].month.month == date.month.month)
+            {
+                for (int d = 0; d < calendar.calendarMonths[m].calendarDays.Count; d++)
+                {
+                    if (calendar.calendarMonths[m].calendarDays[d].day.date == date.day.date)
+                    {
+                        calendar.calendarMonths[m].calendarDays[d].scheduledActivities.Add(activity); // schedule activity
+
+                        // TO DO:
+                        // Sort calendar based on activity start times
+                        // Create a system to check the npcs calendar to determine what they should be doing
+
+                    }
+                }
+            }
         }
     }
 

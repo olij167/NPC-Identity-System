@@ -55,9 +55,9 @@ public class WeatherController : MonoBehaviour
     {
         for (int i = 0; i < seasonConditions.Count; i++)
         {
-            Debug.Log("It is now " + timeController.currentMonth.season);
+            Debug.Log("It is now " + timeController.currentDate.month.season);
 
-            if (timeController.currentMonth.season == seasonConditions[i].season)
+            if (timeController.currentDate.month.season == seasonConditions[i].season)
             {
                 currentSeasonConditions = seasonConditions[i];
                 return;

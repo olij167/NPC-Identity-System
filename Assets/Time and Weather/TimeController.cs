@@ -47,10 +47,10 @@ public class TimeController : MonoBehaviour
     public float timeMultiplier = 1f;
     [Range(0, 24)] public float timeOfDay;
 
-
-    public TimeDay currentDay;
-    public TimeMonth currentMonth;
-    public int year;
+    public Date currentDate;
+    //public TimeDay currentDay;
+    //public TimeMonth currentMonth;
+    //public int year;
     public TimeHourMinSec currentTime;
 
     [System.Serializable]
@@ -64,6 +64,8 @@ public class TimeController : MonoBehaviour
     [Header("UI")]
     public bool showSeconds = true;
     public bool twelveHourTime;
+    [Tooltip("False = Southern, True = Northern")]
+    public bool hemisphere = false;
     private bool isNewDay;
 
     public TextMeshProUGUI timeText, dayText;
@@ -76,88 +78,23 @@ public class TimeController : MonoBehaviour
     [System.Serializable]
     public class Date 
     {
-        public TimeDay date;
+        public TimeDay day;
         public TimeMonth month; 
         public int year; 
     }
 
-    public Date GetCurrentDate()
-    {
-        Date currentDate = new Date();
-        currentDate.date = currentDay;
-        currentDate.month = currentMonth;
-        currentDate.year = year;
-        return currentDate;
-    } 
-    public static List<Date> GetDateInFuture(Date startDate, int daysInFuture)
-    {
-        List<Date> daysBetween = new List<Date>();
-        Date date;
-
-        for (int i = 0; i < daysInFuture; i++)
-        {
-            date = new Date();
-            daysBetween.Add(date);
-
-            if (i == 0)
-            {
-                date.date = startDate.date;
-                date.month = startDate.month;
-
-                //daysBetween[i] = date;
-            }
-            else if (daysBetween[i - 1].date.date < daysBetween[i - 1].month.endOfMonth)
-            {
-                date.date = new TimeDay(); 
-                date.date.date += 1;
-            }
-            else
-            {
-                switch (date.month.month)
-                {
-                    case Month.January: date.month.month = Month.Feburary; date.month.endOfMonth = 28; break;
-                    case Month.Feburary: date.month.month = Month.March; date.month.endOfMonth = 31; break;
-                    case Month.March: date.month.month = Month.April; date.month.endOfMonth = 30; break;
-                    case Month.April: date.month.month = Month.May; date.month.endOfMonth = 31; break;
-                    case Month.May: date.month.month = Month.June; date.month.endOfMonth = 30; break;
-                    case Month.June: date.month.month = Month.July; date.month.endOfMonth = 31; break;
-                    case Month.July: date.month.month = Month.August; date.month.endOfMonth = 31; break;
-                    case Month.August: date.month.month = Month.September; date.month.endOfMonth = 30; break;
-                    case Month.September: date.month.month = Month.October; date.month.endOfMonth = 31; break;
-                    case Month.October: date.month.month = Month.November; date.month.endOfMonth = 30; break;
-                    case Month.November: date.month.month = Month.December; date.month.endOfMonth = 31; break;
-                    case Month.December: date.month.month = Month.January; date.month.endOfMonth = 31; break;
-                }
-
-                date.date = new TimeDay(); 
-                date.date.date = 1;
-            }
-
-            if (i != 0)
-                switch (daysBetween[i - 1].date.day)
-                {
-                    case Day.Sunday: date.date.day = Day.Monday; break;
-                    case Day.Monday: date.date.day = Day.Tuesday; break;
-                    case Day.Tuesday: date.date.day = Day.Wednesday; break;
-                    case Day.Wednesday: date.date.day = Day.Thursday; break;
-                    case Day.Thursday: date.date.day = Day.Friday; break;
-                    case Day.Friday: date.date.day = Day.Saturday; break;
-                    case Day.Saturday: date.date.day = Day.Sunday; break;
-                }
-        }
-
-        return daysBetween;
-    }
-
+    
     void Start()
     {
 
         //weatherController = FindObjectOfType<WeatherController>();
         weatherController = WeatherController.instance;
 
-        dayText.text = currentDay.day.ToString() + ", " + currentMonth.month.ToString() + " " + currentDay.date;
+        dayText.text = currentDate.day.day.ToString() + ", " + currentDate.month.month.ToString() + " " + currentDate.day.date;
 
-        SetMonthVariables(currentMonth);
+        SetMonthVariables(currentDate.month);
+
+        WeatherController.instance.SetSeasonalConditions();
 
     }
 
@@ -220,102 +157,193 @@ public class TimeController : MonoBehaviour
 
             if (isNewDay && timeOfDay < 1f)
             {
-                SetDay(currentDay,currentMonth);
+                SetDayVariables(currentDate);
+                SetNewDay();
             }
         }
     }
 
-    void SetDay(TimeDay day, TimeMonth month)
+    public Date SetDayVariables(Date date)
     {
-        if (day.day > Day.Sunday)
-            day.day++;
+        if (date.day.day < Day.Sunday)
+            date.day.day++;
         else
-            day.day = Day.Monday;
+            date.day.day = Day.Monday;
         
-        if (day.date < month.endOfMonth)
+        if (date.day.date < date.month.endOfMonth)
         {
-            day.date++;
+            date.day.date += 1;
         }
         else
         {
-            if (month.month < Month.December)
-                month.month++;
+            if (date.month.month < Month.December)
+                date.month.month++;
             else
-                month.month = Month.January;
+                date.month.month = Month.January;
 
-            SetMonthVariables(month);
+            SetMonthVariables(date.month);
+
+            date.day.date = 1;
         }
+        return date;
 
-        dayText.text = day.day.ToString() + ", " + month.month.ToString() + " " + day.date;
+    }
+
+    public Date GetDateInFuture(Date startDate, int daysInFuture)
+    {
+        Date trackedDate = new Date();
+        trackedDate.day = startDate.day;
+        trackedDate.month = startDate.month;
+
+        if (daysInFuture > 0)
+        {
+            for (int i = 1; i < daysInFuture; i++)
+            {
+                SetDayVariables(trackedDate);
+
+            }
+
+            //Debug.Log(trackedDate.day.day + ", " + trackedDate.month.month + " " + trackedDate.day.date);
+        }
+        Debug.Log(trackedDate.day.day + ", " + trackedDate.month.month + " " + trackedDate.day.date);
+
+        return trackedDate;
+
+    }
+
+
+    void SetNewDay()
+    {
+        dayText.text = currentDate.day.day.ToString() + ", " + currentDate.month.month.ToString() + " " + currentDate.day.date;
 
         weatherController.SetDailyConditions();
 
         isNewDay = false;
     }
 
-    public void SetMonthVariables(TimeMonth month)
+    public void SetNewMonth(TimeMonth month)
     {
-        switch(month.month)
-        {
-            case Month.January:
-                month.endOfMonth = 31;
-                break;
+        if (month.month < Month.December)
+            month.month++;
+        else
+            month.month = Month.January;
 
-            case Month.Feburary:
-                month.endOfMonth = 28;
-                break;
-
-            case Month.March:
-                month.endOfMonth = 31;
-                month.season = Season.Autumn;
-                WeatherController.instance.SetSeasonalConditions();
-                break;
-
-            case Month.April:
-                month.endOfMonth = 30;
-                break;
-
-            case Month.May:
-                month.endOfMonth = 31;
-                break;
-
-            case Month.June:
-                month.endOfMonth = 30;
-                month.season = Season.Winter;
-                WeatherController.instance.SetSeasonalConditions();
-                break;
-
-            case Month.July:
-                month.endOfMonth = 31;
-                break;
-
-            case Month.August:
-                month.endOfMonth = 31;
-                break;
-
-            case Month.September:
-                month.endOfMonth = 30;
-                month.season = Season.Spring;
-                WeatherController.instance.SetSeasonalConditions();
-                break;
-
-            case Month.October:
-                month.endOfMonth = 31;
-                break;
-
-            case Month.November:
-                month.endOfMonth = 30;
-                break;
-
-            case Month.December:
-                month.endOfMonth = 31;
-                month.season = Season.Summer;
-                WeatherController.instance.SetSeasonalConditions();
-                break;
-        }
+        SetMonthVariables(month);
 
     }
-   
+
+    public void SetMonthVariables(TimeMonth month)
+    {
+        switch (hemisphere)
+        {
+            case false:
+                switch (month.month)
+                {
+                    case Month.January:
+                        month.endOfMonth = 31;
+                        month.season = Season.Summer;
+                        break;
+                    case Month.Feburary:
+                        month.endOfMonth = 28;
+                        month.season = Season.Summer;
+                        break;
+                    case Month.March:
+                        month.endOfMonth = 31;
+                        month.season = Season.Autumn;
+                        break;
+                    case Month.April:
+                        month.endOfMonth = 30;
+                        month.season = Season.Autumn;
+                        break;
+                    case Month.May:
+                        month.endOfMonth = 31;
+                        month.season = Season.Autumn;
+                        break;
+                    case Month.June:
+                        month.endOfMonth = 30;
+                        month.season = Season.Winter;
+                        break;
+                    case Month.July:
+                        month.endOfMonth = 31;
+                        month.season = Season.Winter;
+                        break;
+                    case Month.August:
+                        month.endOfMonth = 31;
+                        month.season = Season.Winter;
+                        break;
+                    case Month.September:
+                        month.endOfMonth = 30;
+                        month.season = Season.Spring;
+                        break;
+                    case Month.October:
+                        month.endOfMonth = 31;
+                        month.season = Season.Spring;
+                        break;
+                    case Month.November:
+                        month.endOfMonth = 30;
+                        month.season = Season.Spring;
+                        break;
+                    case Month.December:
+                        month.endOfMonth = 31;
+                        month.season = Season.Summer;
+                        break;
+                }
+                break;
+            case true:
+                switch (month.month)
+                {
+                    case Month.January:
+                        month.endOfMonth = 31;
+                        month.season = Season.Winter;
+                        break;
+                    case Month.Feburary:
+                        month.endOfMonth = 28;
+                        month.season = Season.Winter;
+                        break;
+                    case Month.March:
+                        month.endOfMonth = 31;
+                        month.season = Season.Spring;
+                        break;
+                    case Month.April:
+                        month.endOfMonth = 30;
+                        month.season = Season.Spring;
+                        break;
+                    case Month.May:
+                        month.endOfMonth = 31;
+                        month.season = Season.Spring;
+                        break;
+                    case Month.June:
+                        month.endOfMonth = 30;
+                        month.season = Season.Summer;
+                        break;
+                    case Month.July:
+                        month.endOfMonth = 31;
+                        month.season = Season.Summer;
+                        break;
+                    case Month.August:
+                        month.endOfMonth = 31;
+                        month.season = Season.Summer;
+                        break;
+                    case Month.September:
+                        month.endOfMonth = 30;
+                        month.season = Season.Autumn;
+                        break;
+                    case Month.October:
+                        month.endOfMonth = 31;
+                        month.season = Season.Autumn;
+                        break;
+                    case Month.November:
+                        month.endOfMonth = 30;
+                        month.season = Season.Autumn;
+                        break;
+                    case Month.December:
+                        month.endOfMonth = 31;
+                        month.season = Season.Winter;
+                        break;
+                }
+                break;
+        }
+    } 
     private void UpdateLighting(float timePercent)
     {
         RenderSettings.ambientLight = preset.ambientColour.Evaluate(timePercent);
@@ -486,21 +514,29 @@ public class TimeController : MonoBehaviour
     //}
 }
 
-//[CustomEditor(typeof(TimeController))]
-//public class TimeControllerEditor : Editor
-//{
-//    public override void OnInspectorGUI()
-//    {
-//        base.OnInspectorGUI();
+[CustomEditor(typeof(TimeController))]
+public class TimeControllerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
 
-//        TimeController timeController = (TimeController)target;
-//        if (timeController == null) return;
+        TimeController timeController = (TimeController)target;
+        if (timeController == null) return;
 
-//        if (GUILayout.Button("Set Calendar"))
-//        {
-//            timeController.calendar = timeController.SetCalendar();
-//        }
-//    }
-//}
+        GUILayout.Space(20);
+
+
+        if (GUILayout.Button("Progress Day"))
+        {
+            timeController.SetDayVariables(timeController.currentDate);
+        } 
+        
+        if (GUILayout.Button("Progress Month"))
+        {
+            timeController.SetNewMonth(timeController.currentDate.month);
+        }
+    }
+}
 
 

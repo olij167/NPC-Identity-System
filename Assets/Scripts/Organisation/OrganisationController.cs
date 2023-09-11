@@ -17,7 +17,7 @@ public class OrganisationController : MonoBehaviour
 
     public Facility.WeeklyRoster roster; // shifts available each day
     //public Facility.DailyRoster dailyRoster;
-    public List<RosterDay> filledRoster;
+    public List<ComingRosterDay> filledRoster;
 
     [System.Serializable]
     public class FilledJob
@@ -54,7 +54,7 @@ public class OrganisationController : MonoBehaviour
     //          ~ going out of business
 
     [System.Serializable]
-    public class RosterDay
+    public class ComingRosterDay
     {
         public TimeController.Date rosterDate;
         public List<Shift> shifts = new List<Shift>();
@@ -94,7 +94,7 @@ public class OrganisationController : MonoBehaviour
                 }
             }
 
-            Debug.Log(openJobs + " open " + potentialJobs[x].job.jobName + " position(s) at " + org.orgName);
+            //Debug.Log(openJobs + " open " + potentialJobs[x].job.jobName + " position(s) at " + org.orgName);
 
             if (openJobs > 0)
                 for (int i = 0; i < openJobs; i++)
@@ -108,21 +108,37 @@ public class OrganisationController : MonoBehaviour
             FillPosition(listing);
         }
 
-        FillRoster(roster, timeController.GetCurrentDate());
+        FillRoster(roster);
     }
 
-    public void FillRoster(Facility.WeeklyRoster requiredShifts, TimeController.Date startDate)
+    public void FillRoster(Facility.WeeklyRoster requiredShifts)
     {
-        //roster = requiredShifts;
-        List<TimeController.Date> rosterWeek = TimeController.GetDateInFuture(startDate, 7);
+        TimeController.Date dayOfWeek = new TimeController.Date();
+        dayOfWeek.day = new TimeController.TimeDay();
+
+        dayOfWeek.day.day = timeController.currentDate.day.day;
+        dayOfWeek.day.date = timeController.currentDate.day.date;
+        dayOfWeek.month = timeController.currentDate.month;
 
         for (int i = 0; i < requiredShifts.dailyShifts.Count; i++)
         {
-            RosterDay rosterDay = new RosterDay();
+            ComingRosterDay rosterDay = new ComingRosterDay();
 
-            rosterDay.rosterDate = rosterWeek[i];
+            if (i != 0)
+                timeController.SetDayVariables(dayOfWeek);
+
+            rosterDay.rosterDate = new TimeController.Date();
+            rosterDay.rosterDate.day = new TimeController.TimeDay();
+
+            rosterDay.rosterDate.day.day = dayOfWeek.day.day;
+            rosterDay.rosterDate.day.date = dayOfWeek.day.date;
+            rosterDay.rosterDate.month = dayOfWeek.month;
+            //rosterDay.shifts = new List<Shift>();
+
+            Debug.Log(dayOfWeek.day.day + ", " + dayOfWeek.month.month + " " + dayOfWeek.day.date);
 
             filledRoster.Add(rosterDay);
+
         }
 
 
@@ -130,12 +146,12 @@ public class OrganisationController : MonoBehaviour
         {
             for (int i = 0; i < roster.dailyShifts.Count; i++)
             {
-                if (filledRoster[d].rosterDate.date.day == roster.dailyShifts[i].rosterDay) // if it's the same day
+                if (filledRoster[d].rosterDate.day.day == roster.dailyShifts[i].rosterDay) // if it's the same day
                 {
                     for (int x = 0; x < roster.dailyShifts[i].shiftSlots.Count; x++) // for each shift slot
                     {
                         int requiredEmployees = roster.dailyShifts[i].shiftSlots[x].numOfEmployees;
-                        for (int r = 0; r < requiredEmployees; r++)
+                        for (int r = 0; r < requiredEmployees; r++) // for each identical shift
                         {
                             // Set the identical shift vatiables
                             Shift shift = new Shift();
@@ -143,34 +159,59 @@ public class OrganisationController : MonoBehaviour
                             shift.job = roster.dailyShifts[i].shiftSlots[x].job;
 
                             List<NPCBrain> availableEmployees = new List<NPCBrain>();
+                            List<NPCBrain> unavailableEmployees = new List<NPCBrain>();
 
-                            for (int fJ = 0; fJ < filledJobs.Count; fJ++)
+                            for (int fJ = 0; fJ < filledJobs.Count; fJ++) // for each employee
                             {
-                                if (filledJobs[fJ].job == shift.job)
+                                if (filledJobs[fJ].job == shift.job) // if their job is the same as the shift requires
                                 {
-                                    availableEmployees.Add(filledJobs[fJ].currentEmployee);
+                                    availableEmployees.Add(filledJobs[fJ].currentEmployee); // add em to a list
                                 }
                             }
 
-                            for (int b = 0; b < availableEmployees.Count; b++)
-                            {
-                                for (int fR = 0; fR < filledRoster[d].shifts.Count; fR++)
+                            if (availableEmployees.Count > 0)
+                                foreach (NPCBrain employee in availableEmployees)
                                 {
-                                    if (availableEmployees[b] != null && availableEmployees[b] == filledRoster[d].shifts[fR].employee)
+                                    for (int fR = 0; fR < filledRoster[d].shifts.Count; fR++) // check the currently filled shifts
                                     {
-                                        availableEmployees.Remove(availableEmployees[b]);
+                                        if (employee != null && employee == filledRoster[d].shifts[fR].employee) // if they're already working remove them
+                                        {
+                                            unavailableEmployees.Add(employee);
+                                        }
                                     }
                                 }
+
+                            for (int u = 0; u < unavailableEmployees.Count; u++)
+                            {
+                                for (int a = 0; a < availableEmployees.Count; a++)
+                                {
+                                    if (unavailableEmployees[u] == availableEmployees[a])
+                                        availableEmployees.RemoveAt(a);
+                                }
                             }
 
 
-                            int rand = Random.Range(0, availableEmployees.Count);
+                            if (availableEmployees.Count > 0)
+                            {
+                                int rand = Random.Range(0, availableEmployees.Count);
 
-                            shift.employee = availableEmployees[rand];
+                                shift.employee = availableEmployees[rand];
 
-                            // set to npc schedule
+                                NPCSchedule.ScheduledActivity work = new NPCSchedule.ScheduledActivity();
 
-                            filledRoster[d].shifts.Add(shift);
+                                work.activityType = NPCSchedule.ActivityType.Work;
+                                work.duration = shift.shiftDuration;
+
+                                shift.employee.npcSchedule.ScheduleActivity(filledRoster[d].rosterDate, work);
+
+                                filledRoster[d].shifts.Add(shift);
+                            }
+                            else // shift is open
+                            {
+                                shift.employee = null;
+
+                                filledRoster[d].shifts.Add(shift);
+                            }
                         }
 
                     }
@@ -181,7 +222,7 @@ public class OrganisationController : MonoBehaviour
 
     public void FillPosition(Job job)
     {
-        Debug.Log("Attempting to fill open" + job.jobName + " positions");
+        //Debug.Log("Attempting to fill open" + job.jobName + " positions");
 
         //if (filledPositions == null)
         //    filledPositions = new List<FilledJob>();
@@ -190,16 +231,16 @@ public class OrganisationController : MonoBehaviour
 
         for (int i = 0; i < creator.npcList.Count; i++)
         {
-            Debug.Log("Checking Qualifications for " + creator.npcList[i].name);
+            //Debug.Log("Checking Qualifications for " + creator.npcList[i].name);
             if (creator.npcList[i].npcInfo.job == null && creator.npcList[i].npcInfo.age >= job.requiredAge && creator.npcList[i].npcInfo.npcSkills.SkillCheck(job.requiredSkills, creator.npcList[i].npcInfo))
             {
-                Debug.Log(creator.npcList[i].name + " passed the job interview");
+                //Debug.Log(creator.npcList[i].name + " passed the job interview");
                 FilledJob newJob = new FilledJob();
                 newJob.job = job;
                 newJob.currentEmployee = creator.npcList[i];
                 creator.npcList[i].npcInfo.job = newJob.job;
                 filledJobs.Add(newJob);
-                Debug.Log(newJob.currentEmployee.name + " is now a " + newJob.job.jobName + " for " + org.orgName);
+                //Debug.Log(newJob.currentEmployee.name + " is now a " + newJob.job.jobName + " for " + org.orgName);
                 return;
 
             }
