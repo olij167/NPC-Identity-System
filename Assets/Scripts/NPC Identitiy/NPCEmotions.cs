@@ -13,6 +13,7 @@ public class NPCEmotions
         public Emotion emotionalDisposition;
 
         [Range(-1,1)] public float extroversion;
+        [Range(5f, 25f)] public float attentionSpan;
 
         //public Personality(Vector2 happinessMinThresholds, Vector2 stressMinThresholds, Vector2 shockMinThresholds)
         //{

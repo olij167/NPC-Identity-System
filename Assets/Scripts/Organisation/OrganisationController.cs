@@ -33,6 +33,7 @@ public class OrganisationController : MonoBehaviour
     {
         public int numOfPositions;
         public Job job;
+        public Transform jobLocation;
     }
 
     [System.Serializable]
@@ -77,6 +78,7 @@ public class OrganisationController : MonoBehaviour
         {
             foreach(JobListing job in facility.jobsAtFacility)
             {
+                job.jobLocation = transform;
                 potentialJobs.Add(job);
             }
             roster = facility.roster;
@@ -201,6 +203,7 @@ public class OrganisationController : MonoBehaviour
 
                                 work.activityType = NPCSchedule.ActivityType.Work;
                                 work.duration = shift.shiftDuration;
+                                work.location = transform;
 
                                 shift.employee.npcSchedule.ScheduleActivity(filledRoster[d].rosterDate, work);
 

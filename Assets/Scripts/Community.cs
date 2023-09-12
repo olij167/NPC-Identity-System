@@ -169,9 +169,11 @@ public class Community : MonoBehaviour
                     newHouse.householdMembers.Add(brain);
 
                     brain.npcInfo.household = newHouse;
+                    brain.npcInfo.household.house = newHouse.house;
 
                     newHouse.householdMembers.Add(brain.npcRelationships.partner);
                     brain.npcRelationships.partner.npcInfo.household = newHouse;
+                    brain.npcRelationships.partner.npcInfo.household.house = newHouse.house;
 
                     if (brain.npcInfo.lastName != brain.npcRelationships.partner.npcInfo.lastName && !brain.npcInfo.lastName.Contains(brain.npcRelationships.partner.npcInfo.lastName) && !brain.npcRelationships.partner.npcInfo.lastName.Contains(brain.npcInfo.lastName))
                     {
@@ -193,6 +195,7 @@ public class Community : MonoBehaviour
                             {
                                 newHouse.householdMembers.Add(child);
                                 child.npcInfo.household = newHouse;
+                                child.npcInfo.household.house = newHouse.house;
                             }
                         }
                     }
@@ -208,6 +211,7 @@ public class Community : MonoBehaviour
                             {
                                 newHouse.householdMembers.Add(child);
                                 child.npcInfo.household = newHouse;
+                                child.npcInfo.household.house = newHouse.house;
                             }
                         }
                     }
@@ -235,6 +239,7 @@ public class Community : MonoBehaviour
                         {
                             newHouse.householdMembers.Add(child);
                             child.npcInfo.household = newHouse;
+                            child.npcInfo.household.house = newHouse.house;
                         }
                     }
 
@@ -247,6 +252,7 @@ public class Community : MonoBehaviour
                         {
                             brain.npcRelationships.parent1.npcInfo.household.householdMembers.Add(brain);
                             brain.npcInfo.household = brain.npcRelationships.parent1.npcInfo.household;
+                            brain.npcInfo.household.house = brain.npcRelationships.parent1.npcInfo.household.house;
                         }
                         else
                         {
@@ -258,9 +264,11 @@ public class Community : MonoBehaviour
                             newHouse.house.name = newHouse.householdName + " Home";
 
                             brain.npcInfo.household = newHouse;
+                            brain.npcInfo.household.house = newHouse.house;
 
                             newHouse.householdMembers.Add(brain.npcRelationships.parent1);
                             brain.npcRelationships.parent1.npcInfo.household = newHouse;
+                            brain.npcRelationships.parent1.npcInfo.household.house = newHouse.house;
 
                             households.Add(newHouse);
 

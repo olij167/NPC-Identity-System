@@ -11,6 +11,8 @@ public class Facility : Possession
 
     public List<OrganisationController.JobListing> jobsAtFacility;
 
+    public WeeklyRoster roster;
+
     [System.Serializable]
     public class WeeklyRoster
     {
@@ -18,9 +20,6 @@ public class Facility : Possession
         public List<DailyShifts> dailyShifts = new List<DailyShifts>();
 
     }
-
-    public WeeklyRoster roster;
-
     public WeeklyRoster SetBlankRoster()
     {
         roster = new WeeklyRoster();

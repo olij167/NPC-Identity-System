@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Pathfinding;
+using UnityEngine.AI;
 
 public class NPCBrain : MonoBehaviour
 {
@@ -16,7 +17,15 @@ public class NPCBrain : MonoBehaviour
 
     public NPCSchedule npcSchedule;
 
+    public NPCSchedule.ScheduledActivity currentActivity;
+
     private AIDestinationSetter destinationSetter;
+    public GameObject waypointPrefab;
+    GameObject waypoint;
+    float timer = 0f;
+
+    //TimeController.Date currentDate;
+    //TimeController.TimeHourMinSec currentTime;
 
     private void Awake()
     {
@@ -24,58 +33,166 @@ public class NPCBrain : MonoBehaviour
 
         destinationSetter = GetComponent<AIDestinationSetter>();
 
-        ////Follow someone of interest for now
+        timer = npcInfo.personality.attentionSpan;
 
-        //if (npcRelationships.partner != null)
-        //{
-        //    destinationSetter.target = npcRelationships.partner.transform;
-        //}
-        //else if (npcRelationships.parent1 != null )
-        //{
-        //    destinationSetter.target = npcRelationships.parent1.transform;
-
-        //}
-        //else if (npcRelationships.children != null && npcRelationships.children.Count > 0 )
-        //{
-        //    destinationSetter.target = npcRelationships.children[0].transform;
-        //}
-        //else
-        //{
-        //    for (int i = 0; i < npcRelationships.relationships.Count; i++)
-        //    {
-        //        if (npcRelationships.relationships[i].affiliation == NPCRelationships.Affiliation.Friend)
-        //        {
-        //            destinationSetter.target = npcRelationships.relationships[i].otherNPC.transform;
-        //            break;
-
-        //        }
-        //    }
-        //}
-
+        //currentDate = TimeController.instance.currentDate;
+        //currentTime = TimeController.instance.currentTime;
+        
+        //currentActivity = null;
+       // SetCurrentActivity();
     }
 
     private void Update()
     {
         npcEmotions.SetMood(npcEmotions.emotion, npcEmotions.personality);
+
+        //if (TimeController.instance.currentTime.timeMinutes == 1f)
+        //{
+        //}
+
+        //StartCoroutine(SetActivity());
+
+        if (destinationSetter.target == null)
+            SetCurrentActivity();
+
+        GoToActivity();
+
+        if (TimeController.instance.currentTime.timeHours > currentActivity.duration.y)
+        {
+            SetCurrentActivity();
+        }
+
     }
 
-
-    public void SetRelationshipStats(NPCBrain otherNPC)
+    public void SetCurrentActivity()
     {
-        NPCRelationships.Relationship newRelo = new NPCRelationships.Relationship();
+        //get current date and time
+        //Debug.Log("setting activity");
+        //Debug.Log(TimeController.instance.currentDate.month.month.ToString());
 
-        newRelo.otherNPC = otherNPC;
+        // find respective date in calendar
+        for (int m = 0; m < npcSchedule.calendar.calendarMonths.Count; m++)
+        {
+            //Debug.Log 
+            if (npcSchedule.calendar.calendarMonths[m].month.month == TimeController.instance.currentDate.month.month)
+            {
+                Debug.Log("Correct month found");
+                for (int d = 0; d < npcSchedule.calendar.calendarMonths[m].calendarDays.Count; d++)
+                {
+                    if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].day.date == TimeController.instance.currentDate.day.date)
+                    {
+                        Debug.Log("Correct day found");
+                        if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities != null && npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities.Count > 0)
+                        {
+                            for (int a = 0; a < npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities.Count; a++)
+                            {
+                                //if the current time is within the activities duration
+                                if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration.x < TimeController.instance.currentTime.timeHours && npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration.y > TimeController.instance.currentTime.timeHours)
+                                {
+                                    //go to location
+                                    Debug.Log("activity found");
 
-        //Check beliefs & determine compatibility
-        //Check Sexual preferences & determine attraction
+                                    currentActivity.activityType = npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].activityType;
+                                    currentActivity.duration = npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration;
+                                    currentActivity.location = npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].location;
+                                }
 
-        //Set authority based on age & occupation
+                            }
+                        }
 
-        //Set respect based on authority and compatibility
-        //Set trust based on reputation and comfort
+                        //For now either walk around or go home if
+                        if (Chance.CoinFlip() && npcInfo.household.householdName != "Homeless")
+                        {
+                            NPCSchedule.ScheduledActivity sleep = new NPCSchedule.ScheduledActivity();
 
-        //Set affection based on other npc reputation, relationship type
+                            sleep.activityType = NPCSchedule.ActivityType.Sleep;
+                            sleep.location = npcInfo.household.house.transform;
+                            sleep.duration.x = TimeController.instance.currentTime.timeHours;
+                            sleep.duration.y = TimeController.instance.currentTime.timeHours + Random.Range(1f, 8f);
+
+                            //Debug.Log(name + ":" + " Time for bed");
+
+                            currentActivity = sleep;
+
+                        }
+                        else
+                        {
+                            NPCSchedule.ScheduledActivity activity = new NPCSchedule.ScheduledActivity();
+
+                            activity.activityType = NPCSchedule.ActivityType.FreeTime;
+
+                            currentActivity = activity;
+                        }
+
+                        // check current mood and needs
+                        //    // create a list of freetime activities with associated moods and need levels
+                        //    // check list and find most suitable activity
+                        // eg. sleep when tired, socialise when lonely, perform hobby when needs are filled
+                    }
+                }
+            }
+        }
+
+        //Debug.Log(name + ":" + " Time for " + currentActivity.activityType.ToString());
     }
+
+    public void GoToActivity()
+    {
+        
+        //Debug.Log(name + ", activity: " + currentActivity.activityType);
+
+        if (currentActivity.location != null)
+            destinationSetter.target = currentActivity.location;
+        else // wander aimlessly
+        {
+            timer += Time.deltaTime;
+            float wanderRange = Random.Range(5f, 10f);
+
+            if (timer >= npcInfo.personality.attentionSpan)
+            {
+                //waypoint.transform.position = RandomNavSphere(transform.position, wanderRange, -1);
+                //destinationSetter.target = waypoint.transform;
+                if (waypoint != null) Destroy(waypoint.gameObject);
+
+                waypoint = Instantiate(waypointPrefab, RandomNavSphere(transform.position, wanderRange, -1), Quaternion.identity);
+
+                destinationSetter.target = waypoint.transform;
+
+                timer = 0;
+            }
+        }
+    }
+
+    // from: https://forum.unity.com/threads/solved-random-wander-ai-using-navmesh.327950/
+    public static Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * distance;
+
+        randomDirection += origin;
+
+        NavMeshHit navHit;
+
+        NavMesh.SamplePosition(randomDirection, out navHit, distance, layermask);
+
+        return navHit.position;
+    }
+
+    //public void SetRelationshipStats(NPCBrain otherNPC)
+    //{
+    //    NPCRelationships.Relationship newRelo = new NPCRelationships.Relationship();
+
+    //    newRelo.otherNPC = otherNPC;
+
+    //    //Check beliefs & determine compatibility
+    //    //Check Sexual preferences & determine attraction
+
+    //    //Set authority based on age & occupation
+
+    //    //Set respect based on authority and compatibility
+    //    //Set trust based on reputation and comfort
+
+    //    //Set affection based on other npc reputation, relationship type
+    //}
 
     //private void FixedUpdate()
     //{

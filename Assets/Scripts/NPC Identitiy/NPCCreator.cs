@@ -316,6 +316,7 @@ public class NPCCreator : MonoBehaviour
         personality.emotionalDisposition = brain.npcEmotions.SetEmotionalDisposition(personality.happinessThresholds, personality.stressThresholds, personality.shockThresholds);
 
         personality.extroversion = Random.Range(-1f, 1f);
+        personality.attentionSpan = Random.Range(5f, 25f);
 
         brain.npcEmotions.personality = personality;
         //brain.npcEmotions.personality.emotionalDisposition = personality.emotionalDisposition;

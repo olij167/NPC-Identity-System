@@ -10,6 +10,7 @@ public class Job : ScriptableObject
 {
     public string jobName;
     [TextArea(3, 10)] public string jobDescription;
+    //public Transform jobLocation;
 
     //public NPCBrain currentEmployee;
 

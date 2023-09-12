@@ -361,6 +361,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 0}
+  emotionalDispositionText: {fileID: 0}
+  beliefText: {fileID: 0}
 --- !u!1 &6819666983333343441
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,10 +416,35 @@ MonoBehaviour:
     fullName: 
     firstName: 
     lastName: 
+    community: {fileID: 0}
+    household:
+      householdName: 
+      householdMembers: []
+      householdBeliefs:
+        privacy: 0
+        diversity: 0
+        freedom: 0
+      house: {fileID: 0}
     family:
       lastName: 
       familyValues:
-        independence: 0
+        privacy: 0
+        diversity: 0
+        freedom: 0
+      familyConceptualBeliefs: []
+      skillGenetics:
+        strength: 0
+        speed: 0
+        charisma: 0
+        coordination: 0
+        intelligence: 0
+        willpower: 0
+        luck: 0
+      skinColour: {r: 0, g: 0, b: 0, a: 0}
+    familyOtherSide:
+      lastName: 
+      familyValues:
+        privacy: 0
         diversity: 0
         freedom: 0
       familyConceptualBeliefs: []
@@ -451,12 +478,14 @@ MonoBehaviour:
       shockThresholds: {x: 0, y: 0}
       emotionalDisposition: 0
       extroversion: 0
+      attentionSpan: 0
     beliefs:
-      independence: 0
+      privacy: 0
       diversity: 0
       freedom: 0
     conceptualBeliefs: []
     backstory: []
+    job: {fileID: 0}
   npcEmotions:
     personality:
       happinessThresholds: {x: 0, y: 0}
@@ -464,6 +493,7 @@ MonoBehaviour:
       shockThresholds: {x: 0, y: 0}
       emotionalDisposition: 0
       extroversion: 0
+      attentionSpan: 0
     emotion:
       npcEmotion: 0
       happiness: 0
@@ -476,6 +506,14 @@ MonoBehaviour:
     siblings: []
     children: []
     relationships: []
+  npcSchedule:
+    calendar:
+      calendarMonths: []
+  currentActivity:
+    duration: {x: 0, y: 0}
+    activityType: 0
+    location: {fileID: 0}
+  waypointPrefab: {fileID: 4079581467022654025, guid: c9ae7577a6d3548469fd9514d04ba88a, type: 3}
 --- !u!114 &3200553333211676000
 MonoBehaviour:
   m_ObjectHideFlags: 0

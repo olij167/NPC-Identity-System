@@ -189,6 +189,8 @@ public class TimeController : MonoBehaviour
 
     }
 
+    public static Date GetCurrentDate() { return instance.currentDate; }
+
     public Date GetDateInFuture(Date startDate, int daysInFuture)
     {
         Date trackedDate = new Date();

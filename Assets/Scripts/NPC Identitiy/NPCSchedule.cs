@@ -2,15 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Pathfinding;
 
 [System.Serializable]
 public class NPCSchedule
 {
-
     public Calendar calendar;
-    //public List<TimeController.Day> daysInYear;
-    public CalendarWeek currentWeek;
 
+    //public ScheduledActivity FreeTime()
+    //{
+    //    ScheduledActivity freeTime = new ScheduledActivity();
+
+    //    freeTime.activityType = ActivityType.FreeTime;
+
+    //    // check current mood and needs
+    //    // create a list of freetime activities with associated moods and need levels
+    //    // check list and find most suitable activity
+
+    //    return freeTime;
+    //}
+
+    //public ScheduledActivity BedTime()
+    //{
+    //    ScheduledActivity bedTime = new ScheduledActivity();
+
+    //    bedTime.activityType = ActivityType.Sleep;
+
+    //    // go home
+
+    //    return bedTime;
+    //}
 
     [System.Serializable]
     public class Calendar
@@ -80,6 +101,7 @@ public class NPCSchedule
         public Vector2 duration;
         public ActivityType activityType;
 
+        public Transform location;
         // info about the scheduled activity for the npc
             // - where to go
             // - how it affects their mood
@@ -89,7 +111,7 @@ public class NPCSchedule
     [System.Serializable]
     public enum ActivityType
     {
-        Social, Hobby, Sleep, Work, SelfCare
+        FreeTime, Social, Sleep, Work, SelfCare
     }
 
     public void SetCalendar(Calendar calendar)
@@ -156,32 +178,6 @@ public class NPCSchedule
             }
         }
     }
-    //for (int d = 0; d < calendar.calendarMonths[m].month.endOfMonth; d++)
-    //{
-    //    calendar.calendarMonths[m].calendarDays.Add(new CalendarDay());
-    //}
-
-    //for (int d = 0; d < calendar.calendarMonths[m].calendarDays.Count; d++)
-    //{
-    //    //switch (d)
-    //    //{
-    //    //    case int n when n == 0 || n == 7 || n == 14 || n == 21 || n == 28: calendar.calendarMonths[m].calendarDays[d].day.day = TimeController.Day.Monday; break;
-    //    //    case int n when n == 1 || n == 8 || n == 15 || n == 22 || n == 29: calendar.calendarMonths[m].calendarDays[d].day.day = TimeController.Day.Tuesday; break;
-    //    //    case int n when n == 2 || n == 9 || n == 16 || n == 23 || n == 30: calendar.calendarMonths[m].calendarDays[d].day.day = TimeController.Day.Wednesday; break;
-    //    //    case int n when n == 3 || n == 10 || n == 17 || n == 24 || n == 31: calendar.calendarMonths[m].calendarDays[d].day.day = TimeController.Day.Thursday; break;
-    //    //    case int n when n == 4 || n == 11 || n == 18 || n == 25: calendar.calendarMonths[m].calendarDays[d].day.day = TimeController.Day.Friday; break;
-    //    //    case int n when n == 5 || n == 12 || n == 19 || n == 26: calendar.calendarMonths[m].calendarDays[d].day.day = TimeController.Day.Saturday; break;
-    //    //    case int n when n == 6 || n == 13 || n == 20 || n == 27: calendar.calendarMonths[m].calendarDays[d].day.day = TimeController.Day.Sunday; break;
-    //    //}
-
-    //    calendar.calendarMonths[m].calendarDays[d].day.date = d + 1;
-
-
-    //    for (int hr = 0; hr < 24; hr++)
-    //    {
-    //        calendar.calendarMonths[m].calendarDays[d].calendarHours.Add(new CalendarHour());
-    //    }
-    //}
     public TimeController.Day SetDayOfWeek(TimeController.Day yesterday)
     {
         switch (yesterday)
@@ -196,7 +192,6 @@ public class NPCSchedule
             default: return TimeController.Day.Monday;
         }
     }
-
     public void SetMonthVariables(TimeController.TimeMonth month)
     {
         switch ((int)month.month)
