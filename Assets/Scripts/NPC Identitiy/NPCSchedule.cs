@@ -49,7 +49,7 @@ public class NPCSchedule
     [System.Serializable]
     public class CalendarDay
     {
-        public TimeController.TimeDay day = new TimeController.TimeDay();
+        public TimeController.Date day = new TimeController.Date();
         public List<ScheduledActivity> scheduledActivities = new List<ScheduledActivity>();
     }
 
@@ -165,9 +165,11 @@ public class NPCSchedule
             
             for (int d = 0; d < calendar.calendarMonths[i].calendarDays.Count; d++)
             {
-                calendar.calendarMonths[i].calendarDays[d].day.day = daysInYear[currentDayCount];
+                calendar.calendarMonths[i].calendarDays[d].day = new TimeController.Date();
+                calendar.calendarMonths[i].calendarDays[d].day.day = new TimeController.TimeDay();
+                calendar.calendarMonths[i].calendarDays[d].day.day.day = daysInYear[currentDayCount];
                 currentDayCount++;
-                calendar.calendarMonths[i].calendarDays[d].day.date = d + 1;
+                calendar.calendarMonths[i].calendarDays[d].day.day.date = d + 1;
 
                 //for (int h = 0; h < 24; h++)
                 //{
@@ -269,7 +271,7 @@ public class NPCSchedule
             {
                 for (int d = 0; d < calendar.calendarMonths[m].calendarDays.Count; d++)
                 {
-                    if (calendar.calendarMonths[m].calendarDays[d].day.date == date.day.date)
+                    if (calendar.calendarMonths[m].calendarDays[d].day.day.date == date.day.date)
                     {
                         calendar.calendarMonths[m].calendarDays[d].scheduledActivities.Add(activity); // schedule activity
 

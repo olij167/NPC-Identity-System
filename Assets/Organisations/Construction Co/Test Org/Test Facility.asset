@@ -19,117 +19,120 @@ MonoBehaviour:
   jobsAtFacility:
   - numOfPositions: 1
     job: {fileID: 11400000, guid: 82ca2473c0505404c8a8b4799734186e, type: 2}
+    jobLocation: {fileID: 0}
   - numOfPositions: 4
     job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
+    jobLocation: {fileID: 0}
   - numOfPositions: 12
     job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
+    jobLocation: {fileID: 0}
   roster:
     dailyShifts:
     - rosterDay: 1
       shiftSlots:
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 1}
+        shiftDuration: {x: 9, y: 13}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 1, y: 5}
+        shiftDuration: {x: 1, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
     - rosterDay: 2
       shiftSlots:
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 1}
+        shiftDuration: {x: 9, y: 13}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 1, y: 5}
+        shiftDuration: {x: 1, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 82ca2473c0505404c8a8b4799734186e, type: 2}
-        shiftDuration: {x: 11, y: 2}
+        shiftDuration: {x: 11, y: 14}
         numOfEmployees: 1
     - rosterDay: 3
       shiftSlots:
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 1}
+        shiftDuration: {x: 9, y: 13}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 1, y: 5}
+        shiftDuration: {x: 1, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 82ca2473c0505404c8a8b4799734186e, type: 2}
-        shiftDuration: {x: 11, y: 2}
+        shiftDuration: {x: 11, y: 14}
         numOfEmployees: 1
     - rosterDay: 4
       shiftSlots:
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 1}
+        shiftDuration: {x: 9, y: 13}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 1, y: 5}
+        shiftDuration: {x: 1, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 82ca2473c0505404c8a8b4799734186e, type: 2}
-        shiftDuration: {x: 11, y: 2}
+        shiftDuration: {x: 11, y: 14}
         numOfEmployees: 1
     - rosterDay: 5
       shiftSlots:
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 1}
+        shiftDuration: {x: 9, y: 13}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 1, y: 5}
+        shiftDuration: {x: 1, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
     - rosterDay: 6
       shiftSlots:
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 1}
+        shiftDuration: {x: 9, y: 13}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 1, y: 5}
+        shiftDuration: {x: 1, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
     - rosterDay: 7
       shiftSlots:
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 1}
+        shiftDuration: {x: 9, y: 13}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 1, y: 5}
+        shiftDuration: {x: 1, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 375c80bb7c7d6d44eb7ece226a9b6caf, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
       - job: {fileID: 11400000, guid: 9fd8b5e6f030ea84ebd4a63730e802e2, type: 2}
-        shiftDuration: {x: 9, y: 5}
+        shiftDuration: {x: 9, y: 17}
         numOfEmployees: 2
   possessionType: 2

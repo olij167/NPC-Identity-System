@@ -5,6 +5,7 @@ using UnityEditor;
 using Pathfinding;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NPCObjectDetection))]
 public class NPCBrain : MonoBehaviour
 {
     public NPCInfo npcInfo;
@@ -24,6 +25,7 @@ public class NPCBrain : MonoBehaviour
     GameObject waypoint;
     float timer = 0f;
 
+    public NPCObjectDetection npcEyes;
     //TimeController.Date currentDate;
     //TimeController.TimeHourMinSec currentTime;
 
@@ -46,22 +48,18 @@ public class NPCBrain : MonoBehaviour
     {
         npcEmotions.SetMood(npcEmotions.emotion, npcEmotions.personality);
 
-        //if (TimeController.instance.currentTime.timeMinutes == 1f)
-        //{
-        //}
-
-        //StartCoroutine(SetActivity());
-
-        if (destinationSetter.target == null)
-            SetCurrentActivity();
+        //if (TimeController.instance.currentTime.timeHours >= currentActivity.duration.y)
+        //    SetCurrentActivity();
 
         GoToActivity();
 
-        if (TimeController.instance.currentTime.timeHours > currentActivity.duration.y)
+        if (TimeController.instance.currentTime.timeHours >= currentActivity.duration.y) 
         {
             SetCurrentActivity();
         }
-
+        // ^^ change to set at midnight each day,
+        // - first set planned activities then generate freetime activites
+        // - freetime activites should check what the npc's partner, friends, and family are doing and whether they would wanna hangout
     }
 
     public void SetCurrentActivity()
@@ -73,35 +71,33 @@ public class NPCBrain : MonoBehaviour
         // find respective date in calendar
         for (int m = 0; m < npcSchedule.calendar.calendarMonths.Count; m++)
         {
-            //Debug.Log 
             if (npcSchedule.calendar.calendarMonths[m].month.month == TimeController.instance.currentDate.month.month)
             {
                 Debug.Log("Correct month found");
                 for (int d = 0; d < npcSchedule.calendar.calendarMonths[m].calendarDays.Count; d++)
                 {
-                    if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].day.date == TimeController.instance.currentDate.day.date)
+                    if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].day.day.date == TimeController.instance.currentDate.day.date)
                     {
                         Debug.Log("Correct day found");
                         if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities != null && npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities.Count > 0)
                         {
+                            Debug.Log("activities found during day");
                             for (int a = 0; a < npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities.Count; a++)
                             {
                                 //if the current time is within the activities duration
-                                if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration.x < TimeController.instance.currentTime.timeHours && npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration.y > TimeController.instance.currentTime.timeHours)
+                                if (npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration.x <= TimeController.instance.currentTime.timeHours &&
+                                    npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration.y > TimeController.instance.currentTime.timeHours)
                                 {
                                     //go to location
-                                    Debug.Log("activity found");
+                                    Debug.Log("activity found for right now");
 
                                     currentActivity.activityType = npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].activityType;
                                     currentActivity.duration = npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].duration;
                                     currentActivity.location = npcSchedule.calendar.calendarMonths[m].calendarDays[d].scheduledActivities[a].location;
                                 }
-
                             }
                         }
-
-                        //For now either walk around or go home if
-                        if (Chance.CoinFlip() && npcInfo.household.householdName != "Homeless")
+                        else if (Chance.CoinFlip() && npcInfo.household.house != null) //For now either walk around or go home if not at work
                         {
                             NPCSchedule.ScheduledActivity sleep = new NPCSchedule.ScheduledActivity();
 
@@ -133,17 +129,16 @@ public class NPCBrain : MonoBehaviour
             }
         }
 
+        //if (currentActivity.duration.)
+
         //Debug.Log(name + ":" + " Time for " + currentActivity.activityType.ToString());
     }
 
     public void GoToActivity()
     {
-        
-        //Debug.Log(name + ", activity: " + currentActivity.activityType);
-
-        if (currentActivity.location != null)
+        if (currentActivity.location != null) // if you have somewhere to be then go there
             destinationSetter.target = currentActivity.location;
-        else // wander aimlessly
+        else // otherwise wander aimlessly
         {
             timer += Time.deltaTime;
             float wanderRange = Random.Range(5f, 10f);
@@ -161,6 +156,15 @@ public class NPCBrain : MonoBehaviour
                 timer = 0;
             }
         }
+    }
+
+    public void GenerateFreetimeActivites()
+    {
+        // Check NPC Needs -> perform selfcare if below certain thresholds, overrides other freetime activites (should differ based on traits) 
+        // Check NPC Hobbies -> what they enjoy doing (should differ based on traits) 
+        // Check Relationships -> what the npc's partner, friends, and family are doing and whether they would wanna hangout
+            // check other npcs schedule -> if also free -> check if they have any common hobbies -> decide from mutual hobbies -> change relationship values during activity
+            // should also depend on both npcs emotions, needs, and whether they are already doing a freetime activity
     }
 
     // from: https://forum.unity.com/threads/solved-random-wander-ai-using-navmesh.327950/

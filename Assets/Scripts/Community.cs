@@ -120,7 +120,7 @@ public class Community : MonoBehaviour
         // spawn houses, npcs in the same immediate family can share a house - children may move out when of age
         SetHouseholds();
 
-        RemoveDuplicateHouseholds();
+        //RemoveDuplicateHouseholds();
         
         foreach (NPCBrain brain in creator.npcList)
         {
@@ -161,8 +161,8 @@ public class Community : MonoBehaviour
     {
         foreach (NPCBrain brain in creator.npcList)
         {
-            if (brain.npcInfo.household.householdName.Length <= 0)
-                if (brain.npcRelationships.partner != null)
+            if (brain.npcInfo.household.householdName.Length <= 0) // if they don't have ahousehold
+                if (brain.npcRelationships.partner != null) // if they have a partner
                 {
                     Household newHouse = CreateHousehold();
 
@@ -175,6 +175,7 @@ public class Community : MonoBehaviour
                     brain.npcRelationships.partner.npcInfo.household = newHouse;
                     brain.npcRelationships.partner.npcInfo.household.house = newHouse.house;
 
+                    // decide household name
                     if (brain.npcInfo.lastName != brain.npcRelationships.partner.npcInfo.lastName && !brain.npcInfo.lastName.Contains(brain.npcRelationships.partner.npcInfo.lastName) && !brain.npcRelationships.partner.npcInfo.lastName.Contains(brain.npcInfo.lastName))
                     {
                         newHouse.householdName = brain.npcInfo.lastName + "-" + brain.npcRelationships.partner.npcInfo.lastName;
@@ -183,11 +184,13 @@ public class Community : MonoBehaviour
 
                     newHouse.house.name = newHouse.householdName + " Home";
 
-                    if (brain.npcRelationships.children.Count > 0)
+                    if (brain.npcRelationships.children.Count > 0) // if the npc has kids 
                     {
                         foreach (NPCBrain child in brain.npcRelationships.children)
                         {
-                            if ((child.npcInfo.age > 18f && Chance.OddsOn(3)) || (child.npcInfo.age > 24f && !Chance.OddsOn(5)) || child.npcInfo.age > 30f && !Chance.OddsOn(10) || newHouse.householdMembers.Contains(child))
+                            if (child.npcInfo.age >= 18f && child.npcInfo.age < 24f && Chance.OddsOn(3) ||
+                                child.npcInfo.age >= 24f && child.npcInfo.age < 30f && !Chance.OddsOn(5) ||
+                                child.npcInfo.age > 30f && !Chance.OddsOn(10) || newHouse.householdMembers.Contains(child)) // check the childs age and determine whether they still live at home
                             {
                                 //don't add them to the household
                             }
@@ -199,11 +202,12 @@ public class Community : MonoBehaviour
                             }
                         }
                     }
+
                     if (brain.npcRelationships.partner.npcRelationships.children.Count > 0)
                     {
                         foreach (NPCBrain child in brain.npcRelationships.partner.npcRelationships.children)
                         {
-                            if ((child.npcInfo.age > 18f && Chance.OddsOn(3)) || (child.npcInfo.age > 24f && !Chance.OddsOn(5)) || child.npcInfo.age > 30f && !Chance.OddsOn(10) || newHouse.householdMembers.Contains(child))
+                            if ((child.npcInfo.age > 18f && Chance.OddsOn(3)) || (child.npcInfo.age > 24f && !Chance.OddsOn(5)) || child.npcInfo.age > 30f && !Chance.OddsOn(10) || newHouse.householdMembers.Contains(child)) // check partners children and determine whether they still live at home
                             {
                                 //don't add them to the household
                             }
@@ -218,15 +222,15 @@ public class Community : MonoBehaviour
 
                     households.Add(newHouse);
                 }
-                else if (brain.npcRelationships.children.Count > 0)
+                else if (brain.npcRelationships.children.Count > 0) // if not in a relationship && has kids
                 {
                     Household newHouse = CreateHousehold();
-
 
                     newHouse.householdMembers.Add(brain);
                     newHouse.householdName = brain.npcInfo.lastName;
 
                     brain.npcInfo.household = newHouse;
+                    brain.npcInfo.household.house = newHouse.house;
                     newHouse.house.name = newHouse.householdName + " Home";
 
                     foreach (NPCBrain child in brain.npcRelationships.children)
@@ -245,16 +249,16 @@ public class Community : MonoBehaviour
 
                     households.Add(newHouse);
                 }
-                else if (brain.npcRelationships.parent1 != null)
+                else if (brain.npcRelationships.parent1 != null) // if not in a relationship & doesnt have kids but has a parent
                 {
-                    if (brain.npcRelationships.parent1.npcInfo.household != null)
+                    if (brain.npcRelationships.parent1.npcInfo.household != null) // if their parent has a household add them to it
                         if (!brain.npcRelationships.parent1.npcInfo.household.householdMembers.Contains(brain))
                         {
                             brain.npcRelationships.parent1.npcInfo.household.householdMembers.Add(brain);
                             brain.npcInfo.household = brain.npcRelationships.parent1.npcInfo.household;
                             brain.npcInfo.household.house = brain.npcRelationships.parent1.npcInfo.household.house;
                         }
-                        else
+                        else // or create a new household
                         {
                             Household newHouse = CreateHousehold();
 
@@ -274,8 +278,25 @@ public class Community : MonoBehaviour
 
                         }
                 }
+                else // if not in a relationship, doesnt have kids, and doesn't have any parents
+                {
+                    Household newHouse = CreateHousehold();
+
+                    newHouse.householdMembers.Add(brain);
+
+                    newHouse.householdName = brain.npcInfo.lastName;
+                    newHouse.house.name = newHouse.householdName + " Home";
+
+                    brain.npcInfo.household = newHouse;
+                    brain.npcInfo.household.house = newHouse.house;
+
+                    households.Add(newHouse);
+                }
+
+
         }
 
+        RemoveDuplicateHouseholds();
     }
 
     public void SetHouseholdBeliefs()
@@ -311,8 +332,18 @@ public class Community : MonoBehaviour
                         {
                             if (households[i].householdMembers[h1] == households[x].householdMembers[h2])
                             {
-                                DestroyImmediate(households[x].house.gameObject);
-                                households.RemoveAt(x);
+                                Debug.Log("Duplicate Household: " + households[i].householdName);
+                                string involvedNPCs = "NPCs in duplicate household: ";
+                                List<NPCBrain> involvedNPCsList = new List<NPCBrain>();
+                                foreach (NPCBrain brain in households[i].householdMembers)
+                                {
+                                    involvedNPCs += brain.name + ", ";
+                                    involvedNPCsList.Add(brain);
+                                }
+                                Debug.Log(involvedNPCs);
+
+                                DestroyImmediate(households[i].house.gameObject);
+                                households.RemoveAt(i);
                                 break;
                             }
                         }

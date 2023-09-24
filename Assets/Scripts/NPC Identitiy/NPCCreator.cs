@@ -133,7 +133,7 @@ public class NPCCreator : MonoBehaviour
                 return brain.npcInfo.skinColour = Color.Lerp(brain.npcInfo.family.skinColour, brain.npcInfo.familyOtherSide.skinColour, r);
             }
             else
-                return brain.npcInfo.skinColour = Color.Lerp(brain.npcInfo.family.skinColour, SetRandomColour(0f, 1f, 0.25f, 0.75f, 0.25f, 0.75f), r);
+                return brain.npcInfo.skinColour = Color.Lerp(brain.npcInfo.family.skinColour, SetRandomColour(0f, 1f, 0.25f, 0.9f, 0.25f, 0.9f), r);
         }
     }
 
@@ -366,7 +366,7 @@ public class NPCCreator : MonoBehaviour
 
         family.skillGenetics.SetFamilySkills();
 
-        family.skinColour = SetRandomColour(0f, 1f, 0.25f, 0.75f, 0.25f, 0.75f);
+        family.skinColour = SetRandomColour(0f, 1f, 0.25f, 0.9f, 0.25f, 0.9f);
 
         return family;
     }
@@ -394,7 +394,7 @@ public class NPCCreator : MonoBehaviour
 
         family.skillGenetics.SetFamilySkills();
 
-        family.skinColour = SetRandomColour(0f, 1f, 0.25f, 0.75f, 0.25f, 0.75f);
+        family.skinColour = SetRandomColour(0f, 1f, 0.25f, 0.9f, 0.25f, 0.9f);
 
         return family;
     }
