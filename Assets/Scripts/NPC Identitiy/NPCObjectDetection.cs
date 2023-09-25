@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class NPCObjectDetection : MonoBehaviour
 {
@@ -8,7 +9,13 @@ public class NPCObjectDetection : MonoBehaviour
     // object avoidance variables
     //public StateController controller;
     public GameObject eyes;
-    public float fieldOfViewAngle = 110f;
+
+    public float viewDistance = 10f;
+    public float fovAngle = 45f;
+    public float viewHeight = 1f;
+    public Color debugMesh = Color.cyan;
+
+    Mesh mesh;
 
     public LayerMask interactableLayers;
     //public List<int> layerIndex;
@@ -48,12 +55,45 @@ public class NPCObjectDetection : MonoBehaviour
         // target = target.transform.parent.gameObject;
     }
 
+    //https://www.youtube.com/watch?v=znZXmmyBF-o
+    Mesh CreateWedgeMesh()
+    {
+        Mesh mesh = new Mesh();
+
+        int numTriangles = 8;
+        int numVertices = numTriangles * 3;
+
+        Vector3[] vertices = new Vector3[numVertices];
+        int[] triangles = new int[numVertices];
+
+        Vector3 bottomCenter = Vector3.zero;
+        Vector3 bottomLeft = Quaternion.Euler(0, -fovAngle, 0) * Vector3.forward * viewDistance;
+        Vector3 bottomRight = Quaternion.Euler(0, fovAngle, 0) * Vector3.forward * viewDistance;
+
+        Vector3 topCenter = bottomCenter + Vector3.up * viewHeight;
+        Vector3 topLeft = bottomLeft + Vector3.up * viewHeight;
+        Vector3 topRight = bottomRight + Vector3.up * viewHeight;
+
+        int vert = 0;
+
+        //left side
+
+        //right side
+
+        //far side
+
+        //top
+
+        //bottom
+
+        return mesh;
+    }
     public void DetectObjects()
     {
 
         RaycastHit hit;
 
-        if (Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit, fieldOfViewAngle, interactableLayers) && !detectedObjects.Contains(hit.transform.gameObject)) //(Physics.SphereCast(eyes.transform.position, lookSphere, transform.forward, out hit, lookSphere, interactableLayers)
+        if (Physics.SphereCast(eyes.transform.position, fovAngle, transform.forward, out hit, fovAngle, interactableLayers) && !detectedObjects.Contains(hit.transform.gameObject)) //Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit, fieldOfViewAngle, interactableLayers) && !detectedObjects.Contains(hit.transform.gameObject)
         {
             //Debug.DrawLine(eyes.transform.position, hit.point, Color.cyan);
 
@@ -126,13 +166,15 @@ public class NPCObjectDetection : MonoBehaviour
 
         if (target == null)
         {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawRay(eyes.transform.position, eyes.transform.forward);
+            Color b = Color.blue;
+            Handles.color = new Color(b.r, b.g, b.b, 0.3f);
+            Handles.DrawSolidDisc(transform.position, transform.up, fovAngle);
         }
         else
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(eyes.transform.position, eyes.transform.forward);
+            Color g = Color.green;
+            Handles.color = new Color(g.r, g.g, g.b, 0.3f);
+            Handles.DrawSolidDisc(transform.position, transform.up, fovAngle);
         }
     }
 
@@ -181,4 +223,29 @@ public class NPCObjectDetection : MonoBehaviour
     //        //    Gizmos.DrawRay(eyes.transform.position, target.transform.position);
     //        //}
     //    }
+}
+
+
+[CustomEditor(typeof(NPCObjectDetection))]
+public class DetectionEditor : Editor
+{
+    private void OnSceneGUI()
+    {
+        NPCObjectDetection _detection = (NPCObjectDetection)target;
+        if (_detection == null) return;
+
+        //Color c = Color.green;
+
+        //Handles.color = new Color(c.r, c.g, c.b, 0.3f);
+        //Handles.DrawSolidDisc(_detection.transform.position, _detection.transform.up, _detection.fov);
+
+        Handles.color = Color.green;
+        _detection.fovAngle = Handles.ScaleValueHandle(
+            _detection.fovAngle, 
+            _detection.transform.position + _detection.transform.forward * _detection.fovAngle,
+            _detection.transform.rotation, 
+            3,
+            Handles.SphereHandleCap, 
+            1);
+    }
 }

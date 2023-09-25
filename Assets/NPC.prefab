@@ -726,12 +726,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3883309422503056599}
-  lookSphere: 50
+  fov: 5
   interactableLayers:
     serializedVersion: 2
     m_Bits: 2147483647
   detectedObjects: []
   target: {fileID: 0}
+  recentlyDetectedObjects: []
 --- !u!114 &3200553333211676000
 MonoBehaviour:
   m_ObjectHideFlags: 0
