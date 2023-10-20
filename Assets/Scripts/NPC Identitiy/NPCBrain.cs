@@ -31,11 +31,11 @@ public class NPCBrain : MonoBehaviour
 
     private void Awake()
     {
-        npcEmotions.personality = npcInfo.personality;
+        npcEmotions.disposition = npcInfo.disposition;
 
         destinationSetter = GetComponent<AIDestinationSetter>();
 
-        timer = npcInfo.personality.attentionSpan;
+        timer = npcInfo.disposition.attentionSpan;
 
         //currentDate = TimeController.instance.currentDate;
         //currentTime = TimeController.instance.currentTime;
@@ -46,7 +46,7 @@ public class NPCBrain : MonoBehaviour
 
     private void Update()
     {
-        npcEmotions.SetMood(npcEmotions.emotion, npcEmotions.personality);
+        npcEmotions.SetMood(npcEmotions.emotion, npcEmotions.disposition);
 
         //if (TimeController.instance.currentTime.timeHours >= currentActivity.duration.y)
         //    SetCurrentActivity();
@@ -97,20 +97,20 @@ public class NPCBrain : MonoBehaviour
                                 }
                             }
                         }
-                        else if (Chance.CoinFlip() && npcInfo.household.house != null) //For now either walk around or go home if not at work
-                        {
-                            NPCSchedule.ScheduledActivity sleep = new NPCSchedule.ScheduledActivity();
+                        //else if (Chance.CoinFlip() && npcInfo.household.house != null) //For now either walk around or go home if not at work
+                        //{
+                        //    NPCSchedule.ScheduledActivity sleep = new NPCSchedule.ScheduledActivity();
 
-                            sleep.activityType = NPCSchedule.ActivityType.Sleep;
-                            sleep.location = npcInfo.household.house.transform;
-                            sleep.duration.x = TimeController.instance.currentTime.timeHours;
-                            sleep.duration.y = TimeController.instance.currentTime.timeHours + Random.Range(1f, 8f);
+                        //    sleep.activityType = NPCSchedule.ActivityType.Sleep;
+                        //    sleep.location = npcInfo.household.house.transform;
+                        //    sleep.duration.x = TimeController.instance.currentTime.timeHours;
+                        //    sleep.duration.y = TimeController.instance.currentTime.timeHours + Random.Range(1f, 8f);
 
-                            //Debug.Log(name + ":" + " Time for bed");
+                        //    //Debug.Log(name + ":" + " Time for bed");
 
-                            currentActivity = sleep;
+                        //    currentActivity = sleep;
 
-                        }
+                        //}
                         else
                         {
                             NPCSchedule.ScheduledActivity activity = new NPCSchedule.ScheduledActivity();
@@ -143,7 +143,7 @@ public class NPCBrain : MonoBehaviour
             timer += Time.deltaTime;
             float wanderRange = Random.Range(5f, 10f);
 
-            if (timer >= npcInfo.personality.attentionSpan)
+            if (timer >= npcInfo.disposition.attentionSpan)
             {
                 //waypoint.transform.position = RandomNavSphere(transform.position, wanderRange, -1);
                 //destinationSetter.target = waypoint.transform;

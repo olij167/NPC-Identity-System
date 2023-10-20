@@ -9,6 +9,7 @@ public class NPCObjectDetection : MonoBehaviour
     //public StateController controller;
     public GameObject eyes;
     public float fieldOfViewAngle = 110f;
+    public float viewDistance = 10;
 
     public LayerMask interactableLayers;
     //public List<int> layerIndex;
@@ -23,7 +24,7 @@ public class NPCObjectDetection : MonoBehaviour
     public class ObjectMemory
     {
         public GameObject recentlyDetectedObject;
-        public float memoryOfObject;
+        public float memoryTimer;
     }
 
     private void Awake()
@@ -53,7 +54,7 @@ public class NPCObjectDetection : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit, fieldOfViewAngle, interactableLayers) && !detectedObjects.Contains(hit.transform.gameObject)) //(Physics.SphereCast(eyes.transform.position, lookSphere, transform.forward, out hit, lookSphere, interactableLayers)
+        if (Physics.SphereCast(eyes.transform.position, fieldOfViewAngle, transform.forward, out hit, fieldOfViewAngle, interactableLayers)) //(Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit, fieldOfViewAngle, interactableLayers) && !detectedObjects.Contains(hit.transform.gameObject)) //(Physics.SphereCast(eyes.transform.position, lookSphere, transform.forward, out hit, lookSphere, interactableLayers)
         {
             //Debug.DrawLine(eyes.transform.position, hit.point, Color.cyan);
 
@@ -62,11 +63,11 @@ public class NPCObjectDetection : MonoBehaviour
 
             if (recentlyDetectedObjects.Count > 0)
             {
-                foreach (ObjectMemory memory in recentlyDetectedObjects)
+                for (int i = 0; i < recentlyDetectedObjects.Count; i++)
                 {
-                   if (memory.recentlyDetectedObject == hit.transform.root.gameObject)
+                    if (recentlyDetectedObjects[i].recentlyDetectedObject == hit.transform.root.gameObject)
                     {
-                        recentlyDetectedObjects.Remove(memory);
+                        recentlyDetectedObjects[i].memoryTimer = 0f;
                     }
                 }
             }
@@ -82,7 +83,7 @@ public class NPCObjectDetection : MonoBehaviour
         {
             if (detectedObjects[i] != Physics.Raycast(eyes.transform.position, eyes.transform.forward, out hit, interactableLayers) /*&& detectedObjects.Contains(hit.transform.gameObject)*/)
             {
-                recentlyDetectedObjects.Add(new ObjectMemory { recentlyDetectedObject = detectedObjects[i], memoryOfObject = GetComponent<NPCBrain>().npcInfo.personality.attentionSpan});
+                recentlyDetectedObjects.Add(new ObjectMemory { recentlyDetectedObject = detectedObjects[i], memoryTimer = GetComponent<NPCBrain>().npcInfo.disposition.attentionSpan});
                 detectedObjects.Remove(detectedObjects[i]);
             }
         }
@@ -104,37 +105,50 @@ public class NPCObjectDetection : MonoBehaviour
     {
         if (recentlyDetectedObjects.Count > 0)
         {
-            foreach (ObjectMemory memory in recentlyDetectedObjects)
+            for (int i = 0; i < recentlyDetectedObjects.Count; i++)
             {
-                memory.memoryOfObject -= Time.deltaTime;
+                recentlyDetectedObjects[i].memoryTimer -= Time.deltaTime;
 
-                if (memory.memoryOfObject <= 0f)
+                if (recentlyDetectedObjects[i].memoryTimer <= 0f)
                 {
-                    recentlyDetectedObjects.Remove(memory);
+                    recentlyDetectedObjects.RemoveAt(i);
                 }
             }
+
+            //foreach (ObjectMemory memory in recentlyDetectedObjects)
+            //{
+            //    if (memory != null)
+            //    {
+            //        memory.memoryTimer -= Time.deltaTime;
+
+            //        if (memory.memoryTimer <= 0f)
+            //        {
+            //            recentlyDetectedObjects.Remove(memory);
+            //        }
+            //    }
+            //}
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        //if (eyes != null)
-        //{
-        //    Gizmos.color = Color.blue;
-        //    Gizmos.DrawWireSphere(eyes.transform.position, lookSphere);
-        //}
+    //private void OnDrawGizmos()
+    //{
+    //    if (eyes != null)
+    //    {
+    //        Gizmos.color = Color.blue;
+    //        Gizmos.DrawWireSphere(eyes.transform.position, lookSphere);
+    //    }
 
-        if (target == null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawRay(eyes.transform.position, eyes.transform.forward);
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(eyes.transform.position, eyes.transform.forward);
-        }
-    }
+    //    if (target == null)
+    //    {
+    //        Gizmos.color = Color.blue;
+    //        Gizmos.DrawRay(eyes.transform.position, eyes.transform.forward);
+    //    }
+    //    else
+    //    {
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawRay(eyes.transform.position, eyes.transform.forward);
+    //    }
+    //}
 
     //    public Transform rayOrigin;
     //    public float viewDistance;
@@ -162,23 +176,23 @@ public class NPCObjectDetection : MonoBehaviour
     //        }
     //    }
 
-    //    private void OnDrawGizmos()
-    //    {
-    //        //if (eyes != null)
-    //        //{
-    //        //    Gizmos.color = Color.blue;
-    //        //    Gizmos.DrawWireSphere(eyes.transform.position, lookSphere);
-    //        //}
+    private void OnDrawGizmos()
+    {
+        //if (eyes != null)
+        //{
+        //    Gizmos.color = Color.blue;
+        //    Gizmos.DrawWireSphere(eyes.transform.position, viewDistance);
+        //}
 
-    //        if (detectedObjects == null)
-    //        {
-    //            Gizmos.color = Color.blue;
-    //            Gizmos.DrawRay(eyes.transform.position, lookPos.transform.position);
-    //        }
-    //        //else
-    //        //{
-    //        //    Gizmos.color = Color.red;
-    //        //    Gizmos.DrawRay(eyes.transform.position, target.transform.position);
-    //        //}
-    //    }
+        if (detectedObjects == null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawRay(eyes.transform.position, eyes.transform.forward * fieldOfViewAngle);
+        }
+        //else
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawRay(eyes.transform.position, target.transform.position);
+        //}
+    }
 }

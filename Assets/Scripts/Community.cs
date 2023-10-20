@@ -368,6 +368,9 @@ public class Community : MonoBehaviour
         foreach(OrganisationController org in potentialOrganisations)
         {
             GameObject newOrg = Instantiate(org.gameObject, SpawnObjects.GenerateRandomWayPoint(), Quaternion.identity);
+            Vector3 waypoint = new Vector3(newOrg.transform.position.x, newOrg.transform.localScale.y / 2, newOrg.transform.position.z);
+            newOrg.transform.position = waypoint;
+
             OrganisationController controller = newOrg.GetComponent<OrganisationController>();
             organisations.Add(controller);
             controller.creator = creator;

@@ -42,7 +42,7 @@ public class NPCInfo
     //public int numOfChildren;
     //public bool hasPartner;
 
-    [HideInInspector] public NPCEmotions.Personality personality;
+    [HideInInspector] public NPCEmotions.EmotionalDisposition disposition;
 
     public BeliefValues beliefs;
     public List<NPCConceptualBeliefs> conceptualBeliefs;
