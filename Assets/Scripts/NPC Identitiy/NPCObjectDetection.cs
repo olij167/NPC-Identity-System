@@ -51,38 +51,38 @@ public class NPCObjectDetection : MonoBehaviour
     }
 
     //https://www.youtube.com/watch?v=znZXmmyBF-o
-    Mesh CreateWedgeMesh()
-    {
-        Mesh mesh = new Mesh();
+    //Mesh CreateWedgeMesh()
+    //{
+    //    Mesh mesh = new Mesh();
 
-        int numTriangles = 8;
-        int numVertices = numTriangles * 3;
+    //    int numTriangles = 8;
+    //    int numVertices = numTriangles * 3;
 
-        Vector3[] vertices = new Vector3[numVertices];
-        int[] triangles = new int[numVertices];
+    //    Vector3[] vertices = new Vector3[numVertices];
+    //    int[] triangles = new int[numVertices];
 
-        Vector3 bottomCenter = Vector3.zero;
-        Vector3 bottomLeft = Quaternion.Euler(0, -fovAngle, 0) * Vector3.forward * viewDistance;
-        Vector3 bottomRight = Quaternion.Euler(0, fovAngle, 0) * Vector3.forward * viewDistance;
+    //    Vector3 bottomCenter = Vector3.zero;
+    //    Vector3 bottomLeft = Quaternion.Euler(0, -fovAngle, 0) * Vector3.forward * viewDistance;
+    //    Vector3 bottomRight = Quaternion.Euler(0, fovAngle, 0) * Vector3.forward * viewDistance;
 
-        Vector3 topCenter = bottomCenter + Vector3.up * viewHeight;
-        Vector3 topLeft = bottomLeft + Vector3.up * viewHeight;
-        Vector3 topRight = bottomRight + Vector3.up * viewHeight;
+    //    Vector3 topCenter = bottomCenter + Vector3.up * viewHeight;
+    //    Vector3 topLeft = bottomLeft + Vector3.up * viewHeight;
+    //    Vector3 topRight = bottomRight + Vector3.up * viewHeight;
 
-        int vert = 0;
+    //    int vert = 0;
 
-        //left side
+    //    //left side
 
-        //right side
+    //    //right side
 
-        //far side
+    //    //far side
 
-        //top
+    //    //top
 
-        //bottom
+    //    //bottom
 
-        return mesh;
-    }
+    //    return mesh;
+    //}
     public void DetectObjects()
     {
 
@@ -232,26 +232,26 @@ public class NPCObjectDetection : MonoBehaviour
 }
 
 
-[CustomEditor(typeof(NPCObjectDetection))]
-public class DetectionEditor : Editor
-{
-    private void OnSceneGUI()
-    {
-        NPCObjectDetection _detection = (NPCObjectDetection)target;
-        if (_detection == null) return;
+//[CustomEditor(typeof(NPCObjectDetection))]
+//public class DetectionEditor : Editor
+//{
+//    private void OnSceneGUI()
+//    {
+//        NPCObjectDetection _detection = (NPCObjectDetection)target;
+//        if (_detection == null) return;
 
-        //Color c = Color.green;
+//        //Color c = Color.green;
 
-        //Handles.color = new Color(c.r, c.g, c.b, 0.3f);
-        //Handles.DrawSolidDisc(_detection.transform.position, _detection.transform.up, _detection.fov);
+//        //Handles.color = new Color(c.r, c.g, c.b, 0.3f);
+//        //Handles.DrawSolidDisc(_detection.transform.position, _detection.transform.up, _detection.fov);
 
-        Handles.color = Color.green;
-        _detection.fovAngle = Handles.ScaleValueHandle(
-            _detection.fovAngle, 
-            _detection.transform.position + _detection.transform.forward * _detection.fovAngle,
-            _detection.transform.rotation, 
-            3,
-            Handles.SphereHandleCap, 
-            1);
-    }
-}
+//        Handles.color = Color.green;
+//        _detection.fovAngle = Handles.ScaleValueHandle(
+//            _detection.fovAngle, 
+//            _detection.transform.position + _detection.transform.forward * _detection.fovAngle,
+//            _detection.transform.rotation, 
+//            3,
+//            Handles.SphereHandleCap, 
+//            1);
+//    }
+//}
