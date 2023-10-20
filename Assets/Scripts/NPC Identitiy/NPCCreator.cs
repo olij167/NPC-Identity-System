@@ -59,8 +59,8 @@ public class NPCCreator : MonoBehaviour
             newNPC.transform.localScale = Vector3.Lerp(minSize, Vector3.one, newInfo.age / 18f);
         }
 
-        newInfo.personality = SetPersonality(newBrain);
-        newBrain.npcEmotions.personality = newInfo.personality;
+        newInfo.disposition = SetEmotionalDisposition(newBrain);
+        newBrain.npcEmotions.disposition = newInfo.disposition;
 
         newInfo.gender = gender;
         newInfo.appearance = appearance;
@@ -300,27 +300,27 @@ public class NPCCreator : MonoBehaviour
         return npc.fullName = npc.firstName + " " + npc.lastName;
     }
 
-    public NPCEmotions.Personality SetPersonality(NPCBrain brain)
+    public NPCEmotions.EmotionalDisposition SetEmotionalDisposition(NPCBrain brain)
     {
 
-        NPCEmotions.Personality personality = new NPCEmotions.Personality();
-        personality.happinessThresholds.x = Random.Range(personalityThresholdRange.x, personalityThresholdRange.y); //happiness threshold
-        personality.happinessThresholds.y = Random.Range(-personalityThresholdRange.y, -personalityThresholdRange.x); //sadness threshold
+        NPCEmotions.EmotionalDisposition disposition = new NPCEmotions.EmotionalDisposition();
+        disposition.happinessThresholds.x = Random.Range(personalityThresholdRange.x, personalityThresholdRange.y); //happiness threshold
+        disposition.happinessThresholds.y = Random.Range(-personalityThresholdRange.y, -personalityThresholdRange.x); //sadness threshold
 
-        personality.stressThresholds.x = Random.Range(personalityThresholdRange.x, personalityThresholdRange.y); //anger threshold
-        personality.stressThresholds.y = Random.Range(-personalityThresholdRange.y, -personalityThresholdRange.x); //nervous threshold
+        disposition.stressThresholds.x = Random.Range(personalityThresholdRange.x, personalityThresholdRange.y); //anger threshold
+        disposition.stressThresholds.y = Random.Range(-personalityThresholdRange.y, -personalityThresholdRange.x); //nervous threshold
 
-        personality.shockThresholds.x = Random.Range(personalityThresholdRange.x, personalityThresholdRange.y); // surprise threshold
-        personality.shockThresholds.y = Random.Range(-personalityThresholdRange.y, -personalityThresholdRange.x); // fear threshold
+        disposition.shockThresholds.x = Random.Range(personalityThresholdRange.x, personalityThresholdRange.y); // surprise threshold
+        disposition.shockThresholds.y = Random.Range(-personalityThresholdRange.y, -personalityThresholdRange.x); // fear threshold
 
-        personality.emotionalDisposition = brain.npcEmotions.SetEmotionalDisposition(personality.happinessThresholds, personality.stressThresholds, personality.shockThresholds);
+        disposition.emotionalDisposition = brain.npcEmotions.SetEmotionalDisposition(disposition.happinessThresholds, disposition.stressThresholds, disposition.shockThresholds);
 
-        personality.extroversion = Random.Range(-1f, 1f);
-        personality.attentionSpan = Random.Range(5f, 25f);
+        disposition.extroversion = Random.Range(-1f, 1f);
+        disposition.attentionSpan = Random.Range(5f, 25f);
 
-        brain.npcEmotions.personality = personality;
+        brain.npcEmotions.disposition = disposition;
         //brain.npcEmotions.personality.emotionalDisposition = personality.emotionalDisposition;
-        return personality;
+        return disposition;
     }
 
     public void CreateNewRandomFamilies(int numOfFamilies = 10)

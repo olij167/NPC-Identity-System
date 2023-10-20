@@ -135,7 +135,7 @@ public class NPCRelationships
 
     public float SetHostility(NPCBrain thisNPC, Relationship newRelo)
     {
-        return newRelo.relationshipStats.hostility = Mathf.Clamp((-newRelo.relationshipStats.compatibility + -newRelo.relationshipStats.attraction + /*newRelo.relationshipStats.familiarity +*/ thisNPC.npcEmotions.personality.extroversion) / 2, -1f, 1f);
+        return newRelo.relationshipStats.hostility = Mathf.Clamp((-newRelo.relationshipStats.compatibility + -newRelo.relationshipStats.attraction + /*newRelo.relationshipStats.familiarity +*/ thisNPC.npcEmotions.disposition.extroversion) / 2, -1f, 1f);
     }
 
     public float SetAffection(Relationship newRelo)

@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 [System.Serializable]
 public class NPCEmotions
 {
     [System.Serializable]
-    public class Personality
+    public class EmotionalDisposition
     {
+        [Header("Emotional Thresholds")]
         public Vector2 happinessThresholds, stressThresholds, shockThresholds; // minimum threshold for npc to feel this emotion
 
         public Emotion emotionalDisposition;
@@ -26,7 +28,7 @@ public class NPCEmotions
         //}
 
     }
-    public Personality personality;
+    public EmotionalDisposition disposition;
 
     [System.Serializable]
     public enum Emotion
@@ -38,7 +40,7 @@ public class NPCEmotions
     [System.Serializable]
     public struct NPCCurrentEmotion
     {
-        public NPCEmotions.Emotion npcEmotion;
+        public Emotion npcEmotion;
 
 
         public float happiness;
@@ -58,15 +60,15 @@ public class NPCEmotions
     public NPCCurrentEmotion emotion;
 
 
-    public Emotion GetMood(NPCCurrentEmotion emotion, Personality personality)
+    public Emotion GetMood(NPCCurrentEmotion emotion, EmotionalDisposition disposition)
     {
-        SetMood(emotion, personality);
-        return GetStrongestEmotion(emotion, personality);
+        SetMood(emotion, disposition);
+        return GetStrongestEmotion(emotion, disposition);
     }
 
-    public void SetMood(NPCCurrentEmotion emotion, Personality personality)
+    public void SetMood(NPCCurrentEmotion emotion, EmotionalDisposition disposition)
     {
-        emotion.npcEmotion = GetStrongestEmotion(emotion, personality);
+        emotion.npcEmotion = GetStrongestEmotion(emotion, disposition);
         //Debug.Log("Mood has been set");
     }
 
@@ -185,21 +187,21 @@ public class NPCEmotions
             }
         }
 
-        return GetStrongestEmotion(personalityEmotions, personality);
+        return GetStrongestEmotion(personalityEmotions, disposition);
     }
 
-    public Emotion GetStrongestEmotion(NPCCurrentEmotion emotion, Personality personality)
+    public Emotion GetStrongestEmotion(NPCCurrentEmotion emotion, EmotionalDisposition disposition)
     {
-        if (CheckEmotionThreshold(emotion.happiness, personality.happinessThresholds.x))
+        if (CheckEmotionThreshold(emotion.happiness, disposition.happinessThresholds.x))
         {
-            if (CheckEmotionThreshold(emotion.stress, personality.stressThresholds.x))
+            if (CheckEmotionThreshold(emotion.stress, disposition.stressThresholds.x))
             {
-                if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+                if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
                 {
                     //happy & angry & surprised
                     return Emotion.overwhelmed;
                 }
-                else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+                else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
                 {
                     //happy & angry & scared
                     return Emotion.overwhelmed;
@@ -208,15 +210,15 @@ public class NPCEmotions
                 // happy & angry
                 return Emotion.alert;
             }
-            else if (CheckEmotionThreshold(emotion.stress, personality.stressThresholds.y))
+            else if (CheckEmotionThreshold(emotion.stress, disposition.stressThresholds.y))
             {
-                if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+                if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
                 {
                     //happy & nervous & surprised
                     return Emotion.overwhelmed;
 
                 }
-                else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+                else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
                 {
                     //happy & nervous & scared
                     return Emotion.overwhelmed;
@@ -226,12 +228,12 @@ public class NPCEmotions
                 return Emotion.excited;
 
             }
-            if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+            if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
             {
                 // happy & surprised
                 return Emotion.delighted;
             }
-            else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+            else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
             {
                 // happy & scared
                 return Emotion.brave;
@@ -240,17 +242,17 @@ public class NPCEmotions
             // just happy
             return Emotion.happy;
         }
-        else if (CheckEmotionThreshold(emotion.happiness, personality.happinessThresholds.y))
+        else if (CheckEmotionThreshold(emotion.happiness, disposition.happinessThresholds.y))
         {
-            if (CheckEmotionThreshold(emotion.stress, personality.stressThresholds.x))
+            if (CheckEmotionThreshold(emotion.stress, disposition.stressThresholds.x))
             {
-                if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+                if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
                 {
                     //sad & angry & surprised
                     return Emotion.overwhelmed;
 
                 }
-                else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+                else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
                 {
                     //sad & angry & scared
                     return Emotion.overwhelmed;
@@ -260,16 +262,16 @@ public class NPCEmotions
                 // sad & angry
                 return Emotion.grumpy;
             }
-            else if (CheckEmotionThreshold(emotion.stress, personality.stressThresholds.y))
+            else if (CheckEmotionThreshold(emotion.stress, disposition.stressThresholds.y))
             {
-                if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+                if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
                 {
                     //sad & nervous & surprised
                     return Emotion.overwhelmed;
 
 
                 }
-                else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+                else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
                 {
                     //sad & nervous & scared
                     return Emotion.overwhelmed;
@@ -280,12 +282,12 @@ public class NPCEmotions
                 return Emotion.worried;
 
             }
-            if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+            if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
             {
                 // sad & surprised
                 return Emotion.dismayed;
             }
-            else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+            else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
             {
                 // sad & scared
                 return Emotion.fearful;
@@ -293,14 +295,14 @@ public class NPCEmotions
             // just sad
             return Emotion.sad;
         }
-        else if (CheckEmotionThreshold(emotion.stress, personality.stressThresholds.x))
+        else if (CheckEmotionThreshold(emotion.stress, disposition.stressThresholds.x))
         {
-            if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+            if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
             {
                 // angry and surprised
                 return Emotion.startled;
             }
-            else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+            else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
             {
                 //angry and scared
                 return Emotion.upset;
@@ -308,14 +310,14 @@ public class NPCEmotions
             // just angry
             return Emotion.angry;
         }
-        else if (CheckEmotionThreshold(emotion.stress, personality.stressThresholds.y))
+        else if (CheckEmotionThreshold(emotion.stress, disposition.stressThresholds.y))
         {
-            if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+            if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
             {
                 // nervous and surprised
                 return Emotion.alarmed;
             }
-            else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+            else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
             {
                 //nervous and scared
                 return Emotion.horrified;
@@ -323,12 +325,12 @@ public class NPCEmotions
             //just nervous
             return Emotion.nervous;
         }
-        else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.x))
+        else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.x))
         {
             // just surprised
             return Emotion.surprised;
         }
-        else if (CheckEmotionThreshold(emotion.shock, personality.shockThresholds.y))
+        else if (CheckEmotionThreshold(emotion.shock, disposition.shockThresholds.y))
         {
             //just scared
             return Emotion.scared;

@@ -12,7 +12,7 @@ public class NPCTrait : ScriptableObject
     [TextArea(2, 10)] public string traitDescription;
 
     public NPCSkills effectOnSkills;
-    public NPCEmotions.Personality effectOnPersonality;
+    public NPCEmotions.EmotionalDisposition effectOnDisposition;
     public NPCInfo.BeliefValues effectOnBeliefValues;
 
     public List<NPCTrait> conflictingTraits; // Traits which cannot be added if the current trait is active
